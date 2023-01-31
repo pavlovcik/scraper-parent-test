@@ -2,6 +2,7 @@ import "source-map-support/register";
 import readCommandLineArgs from "./cli-args";
 import scrape from "./scraper/src/scrape";
 import fs from "fs";
+import { UserSettings } from './scraper/src/scrape';
 
 if (!readCommandLineArgs.table) {
   // no table has been specified
@@ -29,7 +30,7 @@ if (!readCommandLineArgs.table) {
 }
 
 // CLI ADAPTER
-scrape(readCommandLineArgs.urls, readCommandLineArgs.pages)
+scrape(readCommandLineArgs as typeof readCommandLineArgs & UserSettings)
   .then((data) => {
     console.log(`<<`, data);
     process.exit(0);

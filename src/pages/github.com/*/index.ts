@@ -14,11 +14,11 @@ const tableName = commandLineArgs.table as string;
 
 const supabaseUrl = process.env.SUPABASE_URL;
 if (!supabaseUrl?.length) {
-  throw new Error("no supabase url found");
+  throw new Error("No Supabase URL found. Please set SUPABASE_URL in your .env");
 }
 const supabaseKey = process.env.SUPABASE_KEY;
 if (!supabaseKey?.length) {
-  throw new Error("no supabase key found");
+  throw new Error("No Supabase key found. Please set SUPABASE_KEY in your .env");
 }
 const supabase = createClient(supabaseUrl, supabaseKey);
 

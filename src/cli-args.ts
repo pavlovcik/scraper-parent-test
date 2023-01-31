@@ -1,5 +1,7 @@
+import path from "path";
 import commandLineArgs from "command-line-args";
 import commandLineUsage from "command-line-usage";
+import { log } from './utils';
 
 const optionDefinitions = [
   { name: "help", type: Boolean, alias: "?", description: "Help menu." },
@@ -32,7 +34,7 @@ const optionDefinitions = [
     description: "The URLs for the scraper to process. Can be multiple.",
   },
   {
-    name: "pages", // could also be logic
+    name: "pagesDirectory", // could also be logic
     type: String,
     alias: "p",
     description: "The directory that has the page logic for the scraper",
@@ -48,6 +50,13 @@ const optionDefinitions = [
 
 function readCommandLineArgs() {
   const options = commandLineArgs(optionDefinitions);
+  if(options.pagesDirectory.includes("src/")){
+    log.warn(
+      `The pagesDirectory should be compiled javascript and should not include the "src/" directory. Please replace it with "dist/".`,
+      5
+      )
+  }
+  options.pagesDirectory = path.resolve(options.pagesDirectory);
   if (options.help) {
     const usage = commandLineUsage([
       {
