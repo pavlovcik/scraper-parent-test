@@ -50,13 +50,7 @@ const optionDefinitions = [
 
 function readCommandLineArgs() {
   const options = commandLineArgs(optionDefinitions);
-  if(options.pagesDirectory.includes("src/")){
-    log.warn(
-      `The pagesDirectory should be compiled javascript and should not include the "src/" directory. Please replace it with "dist/".`,
-      5
-      )
-  }
-  options.pagesDirectory = path.resolve(options.pagesDirectory);
+  pagesDirectoryHandler(options);
   if (options.help) {
     const usage = commandLineUsage([
       {
@@ -81,3 +75,20 @@ function readCommandLineArgs() {
 }
 const args = readCommandLineArgs(); // as { [name in Name]: __Type };
 export default args;
+
+function pagesDirectoryHandler(options: commandLineArgs.CommandLineOptions) {
+  if (!options.pagesDirectory) {
+    log.error(
+      `The pagesDirectory is required. Please pass in the directory that has the page logic for the scraper. Example: --pagesDirectory "dist/pages"`,
+      5
+    );
+    process.exit(1);
+  }
+  if (options.pagesDirectory.includes("src/")) {
+    log.warn(
+      `The pagesDirectory should be compiled javascript and should not include the "src/" directory. Please replace it with "dist/".`,
+      5
+    );
+  }
+  options.pagesDirectory = path.resolve(options.pagesDirectory);
+}
