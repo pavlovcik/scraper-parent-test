@@ -1,4 +1,4 @@
-import puppeteer, { Page } from "puppeteer";
+import  { Page } from "puppeteer";
 import { log } from "../../../utils";
 
 export async function getLogin(page: Page) {
@@ -40,7 +40,7 @@ export async function getBio(page: Page) {
 }
 export async function getTwitter_username(page: Page) {
   let twitter = await scrapeTextNode(page, `[href*=twitter]`);
-  twitter = twitter?.replace("@", ""); // remove @
+  twitter = twitter?.replace("@", "") ?? null; // remove @
   return trimmedOrNull(twitter);
 }
 export async function getPublic_repos(page: Page) {
@@ -74,7 +74,7 @@ export async function getCreated_at(page: Page) {
   const years = await page.$$(`[aria-label^="Contribution activity in "]`);
   const latestYear = years[years.length - 1];
   const latestYearTextNode = await latestYear.getProperty("textContent");
-  const text: string | undefined = await latestYearTextNode?.jsonValue();
+  const text: string | null = await latestYearTextNode?.jsonValue();
   if (text) {
     return text;
   }
@@ -99,7 +99,7 @@ export async function extractTextFrom(page: Page, selector: string) {
   return trimmedOrNull(text);
 }
 
-function trimmedOrNull(value: string | null | undefined) {
+function trimmedOrNull(value: string | null) {
   if (!value) {
     return null;
   }
@@ -110,7 +110,7 @@ function trimmedOrNull(value: string | null | undefined) {
   return null;
 }
 
-export async function scrapeTextNode(page: puppeteer.Page, selector: string) {
+export async function scrapeTextNode(page: Page, selector: string) {
   const htmlElement = await page.$(selector);
 
   if (!htmlElement) {
@@ -118,7 +118,7 @@ export async function scrapeTextNode(page: puppeteer.Page, selector: string) {
     return null;
   }
   const htmlElementTextNode = await htmlElement.getProperty("textContent");
-  const text: string | undefined = await htmlElementTextNode?.jsonValue();
+  const text: string | null = await htmlElementTextNode?.jsonValue();
   return text;
 }
 

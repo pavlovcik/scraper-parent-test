@@ -1,10 +1,10 @@
 import { Browser, Page } from "puppeteer";
-import scrape from "../../../../scrape";
-import { log, scrapeHrefsFromAnchors } from "../../../../utils";
+import { log, getHREFsFromAnchors } from "../../../../utils";
 import { extractTextFrom } from "../profile";
 import fs from "fs";
 import path from "path";
-import { resolveProjectPath } from "../../../../boot/events/search-for-import";
+import scrape from "../../../../scraper/src/scrape";
+import { resolveProjectPath } from "../../../../scraper/src/boot/events/search-for-import";
 // this is likely to be dynamically loaded when looking at a specific repository, due to the nesting of the url
 // e.g. https://github.com/ubiquity/dollar
 
@@ -14,27 +14,27 @@ const selectors = {
   commitAuthor: `.commit-author`,
 };
 
-export default async function gitHubRepoView(browser: Browser, page: Page) {
+export default async function gitHubRepoView(browser: Browser, page: Page, pagesDirectory: string) {
   log.warn(`this is a repository`);
 
   const contributorURLsUnique = await getContributorsFromList(page);
 
   if (contributorURLsUnique.length) {
     log.ok(contributorURLsUnique.join(", "));
-    return await scrape(contributorURLsUnique, browser);
+    return await scrape({urls:contributorURLsUnique, pagesDirectory}, browser);
   }
 
   const latestCommitAuthorName = await getLatestCommitUserName(page);
   if (latestCommitAuthorName) {
     const authorGitHubPage = "https://github.com/".concat(latestCommitAuthorName);
     log.ok(authorGitHubPage);
-    return await scrape(authorGitHubPage, browser);
+    return await scrape({urls:authorGitHubPage, pagesDirectory}, browser);
   }
 
   const avatarHref = await clickLatestCommitAvatar(page);
   if (avatarHref) {
     log.ok(avatarHref);
-    return await scrape(avatarHref, browser);
+    return await scrape({urls:avatarHref, pagesDirectory}, browser);
   }
 
   const errorMessage = `no contributors found on repo view?`;
@@ -49,7 +49,7 @@ export default async function gitHubRepoView(browser: Browser, page: Page) {
 // 3. click on the latest commit username's avatar ?
 
 async function getContributorsFromList(page: Page) {
-  const contributorURLs = await scrapeHrefsFromAnchors(page, selectors.contributors);
+  const contributorURLs = await getHREFsFromAnchors(page, selectors.contributors);
   const contributorURLsUnique = [...new Set(contributorURLs)];
   log.info(`contributors: ${contributorURLsUnique.length}`);
   return contributorURLsUnique;
@@ -62,7 +62,7 @@ async function getLatestCommitUserName(page: Page) {
 async function clickLatestCommitAvatar(page: Page) {
   // const soleContributor = await page.waitForSelector(selectors.soleContributor);
   // const href = await soleContributor?.evaluate((element) => (element as HTMLAnchorElement).href);
-  const soleContributor = await scrapeHrefsFromAnchors(page, selectors.soleContributor);
+  const soleContributor = await getHREFsFromAnchors(page, selectors.soleContributor);
   const href = soleContributor?.shift();
   if (href) {
     log.info(`soleContributors: ${href}`);

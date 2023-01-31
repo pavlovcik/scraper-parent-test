@@ -1,4 +1,4 @@
-import scrape from "../../../scrape";
+import scrape from "../../../scraper/src/scrape";
 import { log } from "../../../utils";
 import { scrapeGit } from "../../ethglobal.com/showcase/*";
 // /Users/nv/repos/ubiquity/scraper/src/pages/showcase.ethglobal.com/*/index.ts

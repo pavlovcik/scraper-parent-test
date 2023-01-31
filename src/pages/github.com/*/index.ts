@@ -1,11 +1,11 @@
 import { createClient } from "@supabase/supabase-js";
 import fs from "fs";
 import puppeteer from "puppeteer";
-import scrape from "../../../scrape";
-import { log, scrapeHrefsFromAnchors } from "../../../utils";
+import { log, getHREFsFromAnchors } from "../../../utils";
 
 // let tableName; //  = "GitHub User"; // default
 import commandLineArgs from "../../../cli-args";
+import { Browser, Page } from 'puppeteer';
 
 // if (commandLineArgs.table?.length) {
 log.info(`writing to database table ${commandLineArgs.table}`);
@@ -47,8 +47,9 @@ import {
   getContributions,
   getPercent,
 } from "./profile";
+import scrape from "../../../scraper/src/scrape";
 
-export default async function gitHubProfileViewController(browser: puppeteer.Browser, page: puppeteer.Page) {
+export default async function gitHubProfileViewController(browser: Browser, page: Page,pagesDirectory: string) {
   const contributions = await getContributions(page);
 
   // @TODO: need to design best strategy to determine if this is a personal profile or organization view
@@ -59,13 +60,17 @@ export default async function gitHubProfileViewController(browser: puppeteer.Bro
   } else {
     log.info(`this is an organization profile`);
     // If no contributions are found, its likely to be an organization page.
-    return await scrapeReposOnOrganizationPage(page, browser);
+    return await scrapeReposOnOrganizationPage(page, browser,pagesDirectory);
   }
 }
 
-async function scrapeReposOnOrganizationPage(page, browser) {
-  const repos = await scrapeHrefsFromAnchors(page, `#org-repositories a[data-hovercard-type="repository"]`);
-  const results = (await scrape(repos, browser)) as unknown; // @FIXME: standardize page scraper controller return data type
+async function scrapeReposOnOrganizationPage(page: Page, browser: Browser,pagesDirectory: string) {
+  const repos = await getHREFsFromAnchors(page, `#org-repositories a[data-hovercard-type="repository"]`);
+  const settings = {
+    urls: repos,
+    pagesDirectory
+  }
+  const results = (await scrape(settings, browser)) as unknown; // @FIXME: standardize page scraper controller return data type
   if (typeof results != "string") {
     // results are probably scraped data
     return results;
@@ -73,7 +78,10 @@ async function scrapeReposOnOrganizationPage(page, browser) {
   const contributors = results as unknown as string[]; //.catch((error) => error && log.error(`<< [ ${page.url()} ] caught error`));
   const flattened = contributors.flat(Infinity);
   const unique = [...new Set(flattened)];
-  const scrapeReposOnOrganizationPageResults = await scrape(unique, browser);
+
+  settings.urls = unique;
+
+  const scrapeReposOnOrganizationPageResults = await scrape(settings, browser);
   return scrapeReposOnOrganizationPageResults;
 }
 
