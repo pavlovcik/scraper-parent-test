@@ -16,7 +16,9 @@ if (!readCommandLineArgs.table) {
       console.log(`Using table "${state.table}" from state.json`);
     }
   } else {
-    console.error(`No table specified. Example usage: \`--table "GitHub User"\``);
+    console.error(
+      `No database table specified. Example usage: \`--table "sandbox"\``
+    );
     process.exit(1);
   }
 } else {

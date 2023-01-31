@@ -9,6 +9,6 @@ export default async (browser: Browser, page: Page, pagesDirectory) => {
   const parts = url.split("/");
   parts.pop(); // remove last part of url
   const pageUp = parts.join("/");
-  return await scrape({urls:pageUp,pagesDirectory}, browser);
+  return await scrape({ urls: pageUp, pagesDirectory }, browser);
   // console.trace();
 };

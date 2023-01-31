@@ -1,4 +1,4 @@
-import  { Page } from "puppeteer";
+import { Page } from "puppeteer";
 import { log } from "../../../utils";
 
 export async function getLogin(page: Page) {
@@ -18,13 +18,20 @@ export async function getCompany(page: Page) {
   return await extractTextFrom(page, `[aria-label^="Organization:"]`);
 }
 export async function getBlog(page: Page) {
-  return await extractTextFrom(page, `[data-test-selector="profile-website-url"]`);
+  return await extractTextFrom(
+    page,
+    `[data-test-selector="profile-website-url"]`
+  );
 }
 export async function getLocation(page: Page) {
   return await extractTextFrom(page, `[itemprop="homeLocation"]`);
 }
 export async function getEmail(page: Page) {
-  const emails = await page.evaluate(() => document.body.textContent?.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi));
+  const emails = await page.evaluate(() =>
+    document.body.textContent?.match(
+      /([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/gi
+    )
+  );
   if (emails?.length) {
     const email = emails.shift();
     if (email) {
@@ -85,7 +92,10 @@ export async function getCreated_at(page: Page) {
 // }
 
 export async function getContributions(page) {
-  let contributions = await scrapeTextNode(page, `div.js-yearly-contributions h2`);
+  let contributions = await scrapeTextNode(
+    page,
+    `div.js-yearly-contributions h2`
+  );
   const matched = contributions?.match(/[0-9]*/gim);
   if (matched) {
     contributions = matched.join(``);
@@ -129,12 +139,17 @@ interface ExamplePercentages {
   "Code review": 5;
 }
 
-export async function getCodeStyle(page: Page): Promise<ExamplePercentages | null> {
+export async function getCodeStyle(
+  page: Page
+): Promise<ExamplePercentages | null> {
   const selector = `data-percentages`;
   const element = await page.$(`[${selector}]`);
   let percentages;
   if (element) {
-    percentages = await element.evaluate((el, $) => el.getAttribute($), selector);
+    percentages = await element.evaluate(
+      (el, $) => el.getAttribute($),
+      selector
+    );
     try {
       return JSON.parse(percentages);
     } catch (error) {
@@ -144,7 +159,10 @@ export async function getCodeStyle(page: Page): Promise<ExamplePercentages | nul
   return null;
 }
 
-export function getPercent(_of: keyof ExamplePercentages, codeStyle: ExamplePercentages | null) {
+export function getPercent(
+  _of: keyof ExamplePercentages,
+  codeStyle: ExamplePercentages | null
+) {
   if (!codeStyle) return null;
   return String(codeStyle[_of]);
 }

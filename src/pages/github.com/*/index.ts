@@ -5,7 +5,7 @@ import { log, getHREFsFromAnchors } from "../../../utils";
 
 // let tableName; //  = "GitHub User"; // default
 import commandLineArgs from "../../../cli-args";
-import { Browser, Page } from 'puppeteer';
+import { Browser, Page } from "puppeteer";
 
 // if (commandLineArgs.table?.length) {
 log.info(`writing to database table ${commandLineArgs.table}`);
@@ -49,7 +49,11 @@ import {
 } from "./profile";
 import scrape from "../../../scraper/src/scrape";
 
-export default async function gitHubProfileViewController(browser: Browser, page: Page,pagesDirectory: string) {
+export default async function gitHubProfileViewController(
+  browser: Browser,
+  page: Page,
+  pagesDirectory: string
+) {
   const contributions = await getContributions(page);
 
   // @TODO: need to design best strategy to determine if this is a personal profile or organization view
@@ -60,16 +64,23 @@ export default async function gitHubProfileViewController(browser: Browser, page
   } else {
     log.info(`this is an organization profile`);
     // If no contributions are found, its likely to be an organization page.
-    return await scrapeReposOnOrganizationPage(page, browser,pagesDirectory);
+    return await scrapeReposOnOrganizationPage(page, browser, pagesDirectory);
   }
 }
 
-async function scrapeReposOnOrganizationPage(page: Page, browser: Browser,pagesDirectory: string) {
-  const repos = await getHREFsFromAnchors(page, `#org-repositories a[data-hovercard-type="repository"]`);
+async function scrapeReposOnOrganizationPage(
+  page: Page,
+  browser: Browser,
+  pagesDirectory: string
+) {
+  const repos = await getHREFsFromAnchors(
+    page,
+    `#org-repositories a[data-hovercard-type="repository"]`
+  );
   const settings = {
     urls: repos,
-    pagesDirectory
-  }
+    pagesDirectory,
+  };
   const results = (await scrape(settings, browser)) as unknown; // @FIXME: standardize page scraper controller return data type
   if (typeof results != "string") {
     // results are probably scraped data
@@ -130,7 +141,11 @@ async function scrapePersonalProfile(page, contributions) {
   if (!bufferExists) {
     // set headers
     const buffer = [`date`, ...Object.keys(profile)].join(",");
-    fs.appendFile(`buffer.csv`, buffer.concat("\n"), (error) => error && console.error(error));
+    fs.appendFile(
+      `buffer.csv`,
+      buffer.concat("\n"),
+      (error) => error && console.error(error)
+    );
   }
 
   const values = Object.values(profile);
@@ -147,9 +162,15 @@ async function scrapePersonalProfile(page, contributions) {
     }),
   ];
 
-  fs.appendFile(`buffer.csv`, [new Date(), ...row].join(",").concat("\n"), (error) => error && console.error(error));
+  fs.appendFile(
+    `buffer.csv`,
+    [new Date(), ...row].join(",").concat("\n"),
+    (error) => error && console.error(error)
+  );
   // console.log({ tableName });
-  const response = await supabase.from(tableName).upsert(profile, { onConflict: "login" });
+  const response = await supabase
+    .from(tableName)
+    .upsert(profile, { onConflict: "login" });
 
   if (response.error) {
     console.log(`response.error`);

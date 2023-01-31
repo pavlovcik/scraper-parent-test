@@ -12,7 +12,10 @@ async function _wrapper() {
   if (data.length) {
     const headers = Object.keys(data[0]);
     const date = Date.now();
-    const filename = path.resolve(resolveProjectPath(), `database-export-${date}.csv`);
+    const filename = path.resolve(
+      resolveProjectPath(),
+      `database-export-${date}.csv`
+    );
     writeCsvToDisk(headers, data, filename);
     console.log(`wrote ${data.length} rows to ${filename}`);
   }

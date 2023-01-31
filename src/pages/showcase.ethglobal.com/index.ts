@@ -1,13 +1,16 @@
 import puppeteer from "puppeteer";
 import { getActiveTab, getHREFsFromAnchors } from "../../utils";
-import { Browser, Page } from 'puppeteer';
+import { Browser, Page } from "puppeteer";
 import scrape from "../../scraper/src/scrape";
 
-export default async (browser: Browser, pagesDirectory:string) => {
+export default async (browser: Browser, pagesDirectory: string) => {
   const page = await getActiveTab(browser);
   // await debugLogging(page);
   const hackathonUrls = await getHREFsFromAnchors(page, `#event > div > a`);
-  const results = await scrape({urls: hackathonUrls, pagesDirectory}, browser);
+  const results = await scrape(
+    { urls: hackathonUrls, pagesDirectory },
+    browser
+  );
 
   return results;
 };
@@ -20,5 +23,7 @@ async function debugLogging(page: Page) {
     request.continue();
   });
 
-  page.on("response", (response) => console.log("<<", response.status(), response.url()));
+  page.on("response", (response) =>
+    console.log("<<", response.status(), response.url())
+  );
 }

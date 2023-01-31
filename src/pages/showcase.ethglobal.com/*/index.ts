@@ -8,7 +8,9 @@ const githubSelector = `a[href^="https://github.com/"]`; // Just scrape GitHub e
 // `a[href*=git]`
 
 export default async function showcaseEthGlobal(browser, page) {
-  const githubUrl = await scrapeGit(page, githubSelector).catch((error) => error && log.error(`Couldn't find GitHub link at ${page.url()}`));
+  const githubUrl = await scrapeGit(page, githubSelector).catch(
+    (error) => error && log.error(`Couldn't find GitHub link at ${page.url()}`)
+  );
   if (githubUrl) {
     return await scrape(githubUrl, browser);
   }
