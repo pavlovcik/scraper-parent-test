@@ -1,8 +1,7 @@
 import "source-map-support/register";
 import readCommandLineArgs from "./cli-args";
-import scrape from "./scraper/src/scrape";
 import fs from "fs";
-import { UserSettings } from './scraper/src/scrape';
+import scrape, { UserSettings } from './scraper-kernel/src/scrape';
 
 if (!readCommandLineArgs.table) {
   // no table has been specified
