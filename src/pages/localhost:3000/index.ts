@@ -1,5 +1,5 @@
 import puppeteer from "puppeteer";
-import { getHREFsFromAnchors } from "../../utils";
+import { getHREFsFromAnchors } from "../../utils/utils";
 import { Browser, Page } from "puppeteer";
 import scrape from "../../scraper/src/scrape";
 export default async function ubiquityDollarDashboardController(

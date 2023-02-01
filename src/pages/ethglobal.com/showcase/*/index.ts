@@ -1,5 +1,6 @@
 import puppeteer, { Page } from "puppeteer";
-import { getProperty, log } from "../../../../utils";
+import { getProperty } from "../../../../utils/utils";
+import { log } from "../../../../scraper/src/logging";
 import { Browser } from "puppeteer";
 import scrape from "../../../../scraper/src/scrape";
 import path from "path";

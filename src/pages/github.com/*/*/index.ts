@@ -1,5 +1,6 @@
 import { Browser, Page } from "puppeteer";
-import { log, getHREFsFromAnchors } from "../../../../utils";
+import { getHREFsFromAnchors } from "../../../../utils/utils";
+import { log } from "../../../../scraper/src/logging";
 import { extractTextFrom } from "../profile";
 import fs from "fs";
 import path from "path";

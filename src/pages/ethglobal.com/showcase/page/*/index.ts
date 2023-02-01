@@ -1,4 +1,4 @@
-import { getHREFsFromAnchors } from "../../../../../utils";
+import { getHREFsFromAnchors } from "../../../../../utils/utils";
 import { Browser, Page } from "puppeteer";
 // src/scraper/src/scrape.ts
 // src/pages/ethglobal.com/showcase/page/*/index.ts

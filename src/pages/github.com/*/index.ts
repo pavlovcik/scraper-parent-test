@@ -1,7 +1,8 @@
 import { createClient } from "@supabase/supabase-js";
 import fs from "fs";
 import puppeteer from "puppeteer";
-import { log, getHREFsFromAnchors } from "../../../utils";
+import { getHREFsFromAnchors } from "../../../utils/utils";
+import { log } from "../../../scraper/src/logging";
 
 // let tableName; //  = "GitHub User"; // default
 import commandLineArgs from "../../../cli-args";

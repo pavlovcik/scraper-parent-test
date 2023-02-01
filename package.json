@@ -8,7 +8,7 @@
   "module": "dist/cli.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test:ci": "node dist/cli.js https://github.com/pavlovcik https://github.com/transitive-bullshit --table sandbox",
+    "test:ci": "node dist/cli.js https://github.com/pavlovcik https://github.com/transitive-bullshit --pagesDirectory dist/pages --verbose 5",
     "utils:database-export": "node dist/utils/github-api-enrichment/export-database",
     "prepare": "husky install",
     "prebuild": "run-s clean",

@@ -1,5 +1,5 @@
 import { Page } from "puppeteer";
-import { log } from "../../../utils";
+import { log } from "../../../scraper/src/logging";
 
 export async function getLogin(page: Page) {
   return await extractTextFrom(page, `.vcard-username`);

@@ -1,7 +1,7 @@
 import path from "path";
 import commandLineArgs from "command-line-args";
 import commandLineUsage from "command-line-usage";
-import { log } from './utils';
+import { log } from "./scraper/src/logging";
 
 const optionDefinitions = [
   { name: "help", type: Boolean, alias: "?", description: "Help menu." },
