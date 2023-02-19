@@ -2,6 +2,7 @@ import path from "path";
 import commandLineArgs from "command-line-args";
 import commandLineUsage from "command-line-usage";
 import { log } from "./scraper-kernel/src/logging";
+import fs from "fs";
 
 const optionDefinitions = [
   { name: "help", type: Boolean, alias: "?", description: "Help menu." },
@@ -50,7 +51,7 @@ const optionDefinitions = [
 
 function readCommandLineArgs() {
   const options = commandLineArgs(optionDefinitions);
-  pagesDirectoryHandler(options);
+  pagesHandler(options);
   if (options.help) {
     const usage = commandLineUsage([
       {
@@ -76,17 +77,24 @@ function readCommandLineArgs() {
 const args = readCommandLineArgs(); // as { [name in Name]: __Type };
 export default args;
 
-function pagesDirectoryHandler(options: commandLineArgs.CommandLineOptions) {
-  if (!options.pagesDirectory) {
-    log.error(
-      `The pagesDirectory is required. Please pass in the directory that has the page logic for the scraper. Example: --pagesDirectory "dist/pages"`,
-    );
-    process.exit(1);
+function pagesHandler(options: commandLineArgs.CommandLineOptions) {
+  if (!options.pages) {
+    if (fs.existsSync(`src/pages`)) {
+      log.info(`Using default pages directory: src/pages`);
+      options.pages = path.resolve(`src/pages`);
+      console.log({options})
+      return;
+    } else {
+      log.error(
+        `The pages is required. Please pass in the directory that has the page logic for the scraper. Example: --pages "src/pages"`
+      );
+      process.exit(1);
+    }
   }
-  if (options.pagesDirectory.includes("dist/")) {
-    log.warn(
-      `The pagesDirectory should be TypeScript and should not include the "dist/" directory. Please replace it with "src/" and run again using "tsx".`,
-    );
-  }
-  options.pagesDirectory = path.resolve(options.pagesDirectory);
+  if (options.pages.includes("dist/")) {
+      log.warn(
+        `The pages should not include the "dist/" directory. Please replace it with "src/" and run again using "tsx".`
+      );
+    }
+    options.pages = path.resolve(options.pages);
 }

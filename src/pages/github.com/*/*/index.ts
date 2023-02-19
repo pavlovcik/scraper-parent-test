@@ -18,7 +18,7 @@ const selectors = {
 export default async function gitHubRepoView(
   browser: Browser,
   page: Page,
-  pagesDirectory: string
+  pages: string
 ) {
   log.warn(`this is a repository`);
 
@@ -27,7 +27,7 @@ export default async function gitHubRepoView(
   if (contributorURLsUnique.length) {
     log.ok(contributorURLsUnique.join(", "));
     return await scrape(
-      { urls: contributorURLsUnique, pagesDirectory },
+      { urls: contributorURLsUnique, pages },
       browser
     );
   }
@@ -38,21 +38,17 @@ export default async function gitHubRepoView(
       latestCommitAuthorName
     );
     log.ok(authorGitHubPage);
-    return await scrape({ urls: authorGitHubPage, pagesDirectory }, browser);
+    return await scrape({ urls: authorGitHubPage, pages }, browser);
   }
 
   const avatarHref = await clickLatestCommitAvatar(page);
   if (avatarHref) {
     log.ok(avatarHref);
-    return await scrape({ urls: avatarHref, pagesDirectory }, browser);
+    return await scrape({ urls: avatarHref, pages }, browser);
   }
 
   const errorMessage = `no contributors found on repo view?`;
   log.error(errorMessage);
-  fs.appendFileSync(
-    path.join(resolveProjectPath(), "error.log"),
-    `[ ${page.url()} ]: ${errorMessage}`
-  );
   throw new Error(errorMessage);
 }
 

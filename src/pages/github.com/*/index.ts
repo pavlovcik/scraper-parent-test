@@ -57,7 +57,7 @@ import { log } from "../../../scraper-kernel/src/logging";
 export default async function gitHubProfileViewController(
   browser: Browser,
   page: Page,
-  pagesDirectory: string
+  pages: string
 ) {
   const contributions = await getContributions(page);
 
@@ -69,14 +69,14 @@ export default async function gitHubProfileViewController(
   } else {
     log.info(`this is an organization profile`);
     // If no contributions are found, its likely to be an organization page.
-    return await scrapeReposOnOrganizationPage(page, browser, pagesDirectory);
+    return await scrapeReposOnOrganizationPage(page, browser, pages);
   }
 }
 
 async function scrapeReposOnOrganizationPage(
   page: Page,
   browser: Browser,
-  pagesDirectory: string
+  pages: string
 ) {
   const repos = await getHREFsFromAnchors(
     page,
@@ -84,7 +84,7 @@ async function scrapeReposOnOrganizationPage(
   );
   const settings = {
     urls: repos,
-    pagesDirectory,
+    pages,
   };
   const results = (await scrape(settings, browser)) as unknown; // @FIXME: standardize page scraper controller return data type
   if (typeof results != "string") {

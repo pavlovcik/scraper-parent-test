@@ -14,7 +14,7 @@ export default async (browser: Browser, page: Page) => {
   ); // filter page links out
   projectUrls.push(showcaseUrls.pop() as string);
   const config = {
-    pagesDirectory: "src/pages",
+    pages: "src/pages",
     urls: projectUrls,
   };
   const results = await scrape(config, browser);

@@ -22,7 +22,7 @@ export default async function projectViewController(
       urls: githubUrl,
       // src/pages
       // src/pages/ethglobal.com/showcase/*/index.ts
-      pagesDirectory: path.join(__dirname, "..", ".."),
+      pages: path.join(__dirname, "..", ".."),
     };
     return await scrape(settings, browser);
   }

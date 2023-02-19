@@ -5,7 +5,7 @@
     "name": "アレクサンダー.eth"
   },
   "scripts": {
-    "test:ci": "tsx src/ https://github.com/pavlovcik https://github.com/transitive-bullshit --pages src/pages --verbose 5",
+    "test:ci": "tsx src/ https://github.com/pavlovcik https://github.com/transitive-bullshit",
     "utils:database-export": "tsx src/utils/github-api-enrichment/export-database",
     "prepare": "husky install",
     "format": "run-s format:*",
@@ -13,23 +13,7 @@
     "format:eslint": "eslint . --ext .ts --cache --fix --plugin tsc --rule 'tsc/config: [2, { configFile: ./tsconfig.json }]'"
   },
   "lint-staged": {
-    "*.{ts}": "eslint --cache --fix --plugin tsc --rule 'tsc/config: [2, {configFile: \"./tsconfig.json\"}]'"
-  },
-  "nodemonConfig": {
-    "watch": "tsconfig.tsbuildinfo",
-    "ignore": [
-      "src/*.json",
-      "**/*/cache/",
-      "**/*/artifacts/",
-      "**/*/node_modules/**/*"
-    ],
-    "events": {
-      "config": "",
-      "exit": "",
-      "crash": "",
-      "restart": "clear && printf '\\033[3J'",
-      "start": "clear && printf '\\033[3J'"
-    }
+    "*.{ts}": "prettier --write"
   },
   "devDependencies": {
     "@types/command-line-args": "^5.2.0",

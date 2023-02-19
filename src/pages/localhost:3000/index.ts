@@ -5,12 +5,12 @@ import scrape from "../../../src/scraper-kernel/src/scrape";
 export default async function ubiquityDollarDashboardController(
   browser: Browser,
   page: Page,
-  pagesDirectory: string
+  pages: string
 ) {
   // console.trace("ok");
   const HREFs = await getHREFsFromAnchors(page, "a");
   // console.trace("hrefs");
-  const results = await scrape({ urls: HREFs, pagesDirectory }, browser);
+  const results = await scrape({ urls: HREFs, pages }, browser);
   console.log(results);
   return true;
 }
