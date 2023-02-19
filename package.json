@@ -5,16 +5,15 @@
     "name": "アレクサンダー.eth"
   },
   "scripts": {
-    "test:ci": "tsx src/cli.js https://github.com/pavlovcik https://github.com/transitive-bullshit --pagesDirectory src/pages --verbose 5",
+    "test:ci": "tsx src/ https://github.com/pavlovcik https://github.com/transitive-bullshit --pagesDirectory src/pages --verbose 5",
     "utils:database-export": "tsx src/utils/github-api-enrichment/export-database",
     "prepare": "husky install",
     "prebuild": "run-s clean",
-    "build": "tsc --watch",
     "clean": "rimraf src tsconfig.tsbuildinfo",
     "format": "run-s format:*",
     "format:prettier": "prettier --write src",
     "format:eslint": "eslint . --ext .ts --cache --fix --plugin tsc --rule 'tsc/config: [2, { configFile: ./tsconfig.json }]'",
-    "test:series": "tsx . --verbose 5 --urls https://github.com/finnovateinc/iwns-demo https://github.com/mbcse/web3me-ethonline.git https://github.com/txme/doTransfer https://github.com/apoorvlathey/uni-feeswap https://github.com/pikachua7/DigiOffice-v2.0 https://github.com/Dasika-Vaishnavi/Oceano_Eth https://github.com/Ajand/Coursalize https://github.com/knrdrbn/m1n75n1p3r/ https://github.com/orgs/surfDB/repositories https://github.com/xcryptoshadow/BoxShare https://github.com/zerpajose/PostIt-Backend-and-Contracts https://github.com/goldzulu/myprecious.git https://github.com/emmajane1313/inarisynth https://github.com/Siddesh7/eth-split1 https://github.com/itsanishjain/W3commerce https://github.com/Ptodoroff/NFT-Metaverse"
+    "test:series": "tsx src/ --verbose 5 --urls https://github.com/finnovateinc/iwns-demo https://github.com/mbcse/web3me-ethonline.git https://github.com/txme/doTransfer https://github.com/apoorvlathey/uni-feeswap https://github.com/pikachua7/DigiOffice-v2.0 https://github.com/Dasika-Vaishnavi/Oceano_Eth https://github.com/Ajand/Coursalize https://github.com/knrdrbn/m1n75n1p3r/ https://github.com/orgs/surfDB/repositories https://github.com/xcryptoshadow/BoxShare https://github.com/zerpajose/PostIt-Backend-and-Contracts https://github.com/goldzulu/myprecious.git https://github.com/emmajane1313/inarisynth https://github.com/Siddesh7/eth-split1 https://github.com/itsanishjain/W3commerce https://github.com/Ptodoroff/NFT-Metaverse"
   },
   "lint-staged": {
     "*.{ts}": "eslint --cache --fix --plugin tsc --rule 'tsc/config: [2, {configFile: \"./tsconfig.json\"}]'"
