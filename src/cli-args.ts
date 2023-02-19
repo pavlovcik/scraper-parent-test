@@ -10,15 +10,13 @@ const optionDefinitions = [
     name: "table",
     type: String,
     alias: "t",
-    description:
-      "Which table in the database to save scraped GitHub profiles to.",
+    description: "Which table in the database to save scraped GitHub profiles to.",
   },
   {
     name: "verbose",
     type: Number,
     alias: "v",
-    description:
-      "Pass in a number for verbose level. Max verbosity is level 5.",
+    description: "Pass in a number for verbose level. Max verbosity is level 5.",
   },
   {
     name: "headful",
@@ -44,8 +42,7 @@ const optionDefinitions = [
     name: "recruiter",
     type: String,
     alias: "r",
-    description:
-      "Tag the scraped GitHub profiles with recruiter credit. Must match the handle of the recruiter's GitHub account.",
+    description: "Tag the scraped GitHub profiles with recruiter credit. Must match the handle of the recruiter's GitHub account.",
   },
 ];
 
@@ -63,8 +60,7 @@ function readCommandLineArgs() {
         optionList: optionDefinitions,
       },
       {
-        content:
-          "Without Stability We Have Nothing. Ubiquity DAO. https://ubq.fi/",
+        content: "Without Stability We Have Nothing. Ubiquity DAO. https://ubq.fi/",
       },
     ]);
     console.log(usage);
@@ -75,6 +71,9 @@ function readCommandLineArgs() {
   return options;
 }
 const args = readCommandLineArgs(); // as { [name in Name]: __Type };
+if (args.headful) {
+  global.DEBUG_HEADFUL = args.headful;
+}
 export default args;
 
 function pagesHandler(options: commandLineArgs.CommandLineOptions) {
@@ -82,19 +81,14 @@ function pagesHandler(options: commandLineArgs.CommandLineOptions) {
     if (fs.existsSync(`src/pages`)) {
       log.info(`Using default pages directory: src/pages`);
       options.pages = path.resolve(`src/pages`);
-      console.log({options})
       return;
     } else {
-      log.error(
-        `The pages is required. Please pass in the directory that has the page logic for the scraper. Example: --pages "src/pages"`
-      );
+      log.error(`The pages is required. Please pass in the directory that has the page logic for the scraper. Example: --pages "src/pages"`);
       process.exit(1);
     }
   }
   if (options.pages.includes("dist/")) {
-      log.warn(
-        `The pages should not include the "dist/" directory. Please replace it with "src/" and run again using "tsx".`
-      );
-    }
-    options.pages = path.resolve(options.pages);
+    log.warn(`The pages should not include the "dist/" directory. Please replace it with "src/" and run again using "tsx".`);
+  }
+  options.pages = path.resolve(options.pages);
 }
