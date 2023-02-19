@@ -1,11 +1,11 @@
 import { Browser, Page } from "puppeteer";
 import { getHREFsFromAnchors } from "../../../../utils/utils";
-import { log } from "../../../../scraper/src/logging";
 import { extractTextFrom } from "../profile";
 import fs from "fs";
 import path from "path";
-import scrape from "../../../../scraper/src/scrape";
-import { resolveProjectPath } from "../../../../scraper/src/boot/events/search-for-import";
+import { log } from "../../../../scraper-kernel/src/logging";
+import scrape from "../../../../scraper-kernel/src/scrape";
+import { resolveProjectPath } from "../../../../scraper-kernel/src/boot/events/search-for-import";
 // this is likely to be dynamically loaded when looking at a specific repository, due to the nesting of the url
 // e.g. https://github.com/ubiquity/dollar
 

@@ -1,5 +1,5 @@
 import { Browser, Page } from "puppeteer";
-import scrape from "../../../../scraper/src/scrape";
+import scrape from "../../../../scraper-kernel/src/scrape";
 
 // https://github.com/orgs/*/repositories
 // Just navigate a page up to

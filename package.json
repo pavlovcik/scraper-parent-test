@@ -4,9 +4,9 @@
   "author": {
     "name": "アレクサンダー.eth"
   },
-  "main": "dist/cli.js",
-  "module": "dist/cli.js",
-  "types": "dist/index.d.ts",
+  "main": "dist",
+  "module": "dist",
+  "types": "dist",
   "scripts": {
     "test:ci": "node dist/cli.js https://github.com/pavlovcik https://github.com/transitive-bullshit --pagesDirectory dist/pages --verbose 5",
     "utils:database-export": "node dist/utils/github-api-enrichment/export-database",
@@ -58,7 +58,6 @@
     "eslint": "^8.33.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "eslint-plugin-tsc": "^2.0.0",
     "follow-redirects": "^1.15.2",
     "husky": "^8.0.3",
     "jest": "^29.4.1",

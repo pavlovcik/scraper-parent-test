@@ -1,8 +1,9 @@
 import { getHREFsFromAnchors } from "../../../../../utils/utils";
 import { Browser, Page } from "puppeteer";
+import scrape from "../../../../../scraper-kernel/src/scrape";
 // src/scraper/src/scrape.ts
 // src/pages/ethglobal.com/showcase/page/*/index.ts
-import scrape from "../../../../../scraper/src/scrape";
+
 // gallery view default logic
 // there's 84 pages as of 29 sep 2022
 // there's 127 pages as of 12 oct 2022 // ???

@@ -1,9 +1,9 @@
 import puppeteer, { Page } from "puppeteer";
 import { getProperty } from "../../../../utils/utils";
-import { log } from "../../../../scraper/src/logging";
 import { Browser } from "puppeteer";
-import scrape from "../../../../scraper/src/scrape";
 import path from "path";
+import { log } from "../../../../scraper-kernel/src/logging";
+import scrape from "../../../../scraper-kernel/src/scrape";
 // /Users/nv/repos/ubiquity/scraper/src/pages/ethglobal.com/showcase/*/index.ts
 // project view default logic
 

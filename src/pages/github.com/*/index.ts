@@ -2,7 +2,6 @@ import { createClient } from "@supabase/supabase-js";
 import fs from "fs";
 import puppeteer from "puppeteer";
 import { getHREFsFromAnchors } from "../../../utils/utils";
-import { log } from "../../../scraper/src/logging";
 
 // let tableName; //  = "GitHub User"; // default
 import commandLineArgs from "../../../cli-args";
@@ -15,11 +14,15 @@ const tableName = commandLineArgs.table as string;
 
 const supabaseUrl = process.env.SUPABASE_URL;
 if (!supabaseUrl?.length) {
-  throw new Error("No Supabase URL found. Please set SUPABASE_URL in your .env");
+  throw new Error(
+    "No Supabase URL found. Please set SUPABASE_URL in your .env"
+  );
 }
 const supabaseKey = process.env.SUPABASE_KEY;
 if (!supabaseKey?.length) {
-  throw new Error("No Supabase key found. Please set SUPABASE_KEY in your .env");
+  throw new Error(
+    "No Supabase key found. Please set SUPABASE_KEY in your .env"
+  );
 }
 const supabase = createClient(supabaseUrl, supabaseKey);
 
@@ -48,7 +51,8 @@ import {
   getContributions,
   getPercent,
 } from "./profile";
-import scrape from "../../../scraper/src/scrape";
+import scrape from "../../../scraper-kernel/src/scrape";
+import { log } from "../../../scraper-kernel/src/logging";
 
 export default async function gitHubProfileViewController(
   browser: Browser,
