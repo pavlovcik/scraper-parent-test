@@ -1,9 +1,9 @@
 import path from "path";
-import commandLineArgs from "../../../cli-args";
+import commandLineArgs from "../../cli-args";
 
 import grab from "./fetch-from-supabase";
 import writeCsvToDisk from "./json2csv";
-import { resolveProjectPath } from "../../../scraper-kernel/src/boot/events/search-for-import";
+import { resolveProjectPath } from "../../scraper-kernel/src/boot/events/search-for-import";
 
 const tableName = commandLineArgs.table as string;
 
