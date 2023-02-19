@@ -34,7 +34,7 @@ const optionDefinitions = [
     description: "The URLs for the scraper to process. Can be multiple.",
   },
   {
-    name: "pagesDirectory", // could also be logic
+    name: "pages", // could also be logic
     type: String,
     alias: "p",
     description: "The directory that has the page logic for the scraper",
@@ -80,14 +80,12 @@ function pagesDirectoryHandler(options: commandLineArgs.CommandLineOptions) {
   if (!options.pagesDirectory) {
     log.error(
       `The pagesDirectory is required. Please pass in the directory that has the page logic for the scraper. Example: --pagesDirectory "dist/pages"`,
-      5
     );
     process.exit(1);
   }
-  if (options.pagesDirectory.includes("src/")) {
+  if (options.pagesDirectory.includes("dist/")) {
     log.warn(
-      `The pagesDirectory should be compiled javascript and should not include the "src/" directory. Please replace it with "dist/".`,
-      5
+      `The pagesDirectory should be TypeScript and should not include the "dist/" directory. Please replace it with "src/" and run again using "tsx".`,
     );
   }
   options.pagesDirectory = path.resolve(options.pagesDirectory);
