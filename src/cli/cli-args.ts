@@ -3,12 +3,7 @@ import commandLineUsage from "command-line-usage";
 import { cliOptions } from "./cli-options";
 import { pagesHandler } from "./cli-pages-handler";
 
-const args = readCommandLineArgs(); // as { [name in Name]: __Type };
-if (args.headful) {
-  global.DEBUG_HEADFUL = args.headful;
-}
-
-export default args;
+export default readCommandLineArgs(); // as { [name in Name]: __Type };
 
 function readCommandLineArgs() {
   const options = commandLineArgs(cliOptions);
