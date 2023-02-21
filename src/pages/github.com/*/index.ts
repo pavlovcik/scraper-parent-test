@@ -4,7 +4,7 @@ import puppeteer from "puppeteer";
 import { getHREFsFromAnchors } from "../../../utils/utils";
 
 // let tableName; //  = "GitHub User"; // default
-import commandLineArgs from "../../../cli-args";
+import commandLineArgs from "../../../cli/cli-args";
 import { Browser, Page } from "puppeteer";
 
 // if (commandLineArgs.table?.length) {
