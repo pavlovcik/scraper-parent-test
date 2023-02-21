@@ -1,6 +1,6 @@
 import path from "path";
-import { pipeline } from "stream";
-import { unzip, unzipSync } from "zlib";
+import { pipeline } from "stream/promises";
+// import { unzip, unzipSync } from "zlib";
 import fs from "fs";
 import { log } from "./scraper-kernel/src/logging";
 
@@ -8,32 +8,32 @@ export async function metaMaskSetup(cliArgs) {
   const METAMASK = "metamask";
   const METAMASK_ZIP = "metamask.zip";
 
-  const metaMaskPath = cliArgs.metamask || path.join(__dirname, METAMASK); // no zip
-  if (!fs.existsSync(metaMaskPath)) {
-    log.warn(`${metaMaskPath} not found! Downloading...`);
-    const downloadPath = cliArgs.metamask?.concat(`.zip`) || path.join(__dirname, METAMASK_ZIP); // zip
-    await downloadNewCopy(downloadPath);
+  const dirPath = cliArgs.metamask || path.join(__dirname, METAMASK); // no zip
+  if (!fs.existsSync(dirPath)) {
+    log.warn(`${dirPath} not found! Downloading...`);
+    const zipPath = cliArgs.metamask?.concat(`.zip`) || path.join(__dirname, METAMASK_ZIP); // zip
+    await downloadNewCopy(zipPath, dirPath);
   } else {
-    log.ok(`${metaMaskPath} found!`);
+    log.ok(`${dirPath} found!`);
   }
-  return metaMaskPath;
+  return dirPath;
 }
 
-async function downloadNewCopy(downloadPath: string) {
+import { createReadStream, createWriteStream } from "fs";
+import unzip from "unzip-crx";
+
+async function downloadNewCopy(zipPath: string, dirPath: string) {
   const downloadUrl = await getMetaMaskLatestDownloadUrl();
   const download = await fetch(downloadUrl);
-  const destination = fs.createWriteStream(downloadPath);
-
+  if (!download.ok) {
+    throw new Error(`Unexpected response ${download.statusText}`);
+  }
   // @ts-expect-error
-  pipeline(download.body, destination, (err) => {
-    if (err) {
-      console.error("Failed to download file", err);
-    } else {
-      console.log("File downloaded successfully");
-      const buffer = fs.readFileSync(downloadPath);
-      unzipSync(buffer);
-    }
-  });
+  await pipeline(download.body, createWriteStream(zipPath)); // save to disk
+
+  const crxFile = zipPath;
+  await unzip(crxFile);
+  log.ok("Successfully unzipped your crx file..");
 }
 
 async function getMetaMaskLatestDownloadUrl() {
