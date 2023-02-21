@@ -1,4 +1,4 @@
-export const optionDefinitions = [
+export const cliOptions = [
   { name: "help", type: Boolean, alias: "?", description: "Help menu." },
   {
     name: "table",
@@ -38,4 +38,11 @@ export const optionDefinitions = [
     alias: "r",
     description: "Tag the scraped GitHub profiles with recruiter credit. Must match the handle of the recruiter's GitHub account.",
   },
+  {
+    name: "chromium",
+    type: Array,
+    alias: "c",
+    description: "Pass flags directly to Chromium. Example: --chromium=\"--no-sandbox --disable-setuid-sandbox\"",
+  },
+
 ];

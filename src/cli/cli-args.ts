@@ -1,6 +1,6 @@
 import commandLineArgs from "command-line-args";
 import commandLineUsage from "command-line-usage";
-import { optionDefinitions } from "./cli-option-definitions";
+import { cliOptions } from "./cli-options";
 import { pagesHandler } from "./cli-pages-handler";
 
 const args = readCommandLineArgs(); // as { [name in Name]: __Type };
@@ -11,7 +11,7 @@ if (args.headful) {
 export default args;
 
 function readCommandLineArgs() {
-  const options = commandLineArgs(optionDefinitions);
+  const options = commandLineArgs(cliOptions);
   pagesHandler(options);
   if (options.help) {
     helpMenu();
@@ -29,7 +29,7 @@ function helpMenu() {
     },
     {
       header: "Options",
-      optionList: optionDefinitions,
+      optionList: cliOptions,
     },
     {
       content: "Without Stability We Have Nothing. Ubiquity DAO. https://ubq.fi/",
