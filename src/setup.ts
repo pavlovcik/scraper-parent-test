@@ -4,11 +4,17 @@ import { log } from "./scraper-kernel/src/logging";
 
 export async function setup(cliArgs) {
   const metaMaskPath = await metaMaskSetup(cliArgs);
+
+  const mmArg = [`--disable-extensions-except=${metaMaskPath}`, `--load-extension=${metaMaskPath}`];
+
   if (cliArgs.chromium?.length) {
-    cliArgs.chromium = [`--load-extension=${metaMaskPath}`, ...(cliArgs.chromium as string[])];
+    cliArgs.chromium = [...mmArg, ...(cliArgs.chromium as string[])];
   } else {
-    cliArgs.chromium = [`--load-extension=${metaMaskPath}`];
+    cliArgs.chromium = mmArg;
   }
+
+  console.log({ "cliArgs.chromium": cliArgs.chromium });
+
   tableSetup(cliArgs);
   return cliArgs;
 }

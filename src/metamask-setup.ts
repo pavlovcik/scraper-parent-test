@@ -1,8 +1,9 @@
+import fs from "fs";
 import path from "path";
 import { pipeline } from "stream/promises";
-// import { unzip, unzipSync } from "zlib";
-import fs from "fs";
 import { log } from "./scraper-kernel/src/logging";
+import { createWriteStream } from "fs";
+import unzip from "unzip-crx";
 
 export async function metaMaskSetup(cliArgs) {
   const METAMASK = "metamask";
@@ -12,17 +13,14 @@ export async function metaMaskSetup(cliArgs) {
   if (!fs.existsSync(dirPath)) {
     log.warn(`${dirPath} not found! Downloading...`);
     const zipPath = cliArgs.metamask?.concat(`.zip`) || path.join(__dirname, METAMASK_ZIP); // zip
-    await downloadNewCopy(zipPath, dirPath);
+    await downloadNewCopy(zipPath);
   } else {
     log.ok(`${dirPath} found!`);
   }
   return dirPath;
 }
 
-import { createReadStream, createWriteStream } from "fs";
-import unzip from "unzip-crx";
-
-async function downloadNewCopy(zipPath: string, dirPath: string) {
+async function downloadNewCopy(zipPath: string) {
   const downloadUrl = await getMetaMaskLatestDownloadUrl();
   const download = await fetch(downloadUrl);
   if (!download.ok) {
@@ -34,6 +32,7 @@ async function downloadNewCopy(zipPath: string, dirPath: string) {
   const crxFile = zipPath;
   await unzip(crxFile);
   log.ok("Successfully unzipped your crx file..");
+  return zipPath;
 }
 
 async function getMetaMaskLatestDownloadUrl() {
