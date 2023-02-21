@@ -11,14 +11,29 @@ export default async function defaultPageController(browser: Browser, page: Page
     }
   });
 
-  // Navigate to the page and perform actions that may trigger console errors
+  // await page.waitForSelector("#metamask-icon");
+  // await page.click("#metamask-icon");
+  // await page.waitForSelector("#metamask-mnemonic-box");
+
+  await page.evaluate(
+    (state, mnemonic) => {
+      window.ethereum._state = state;
+
+      window.localStorage.setItem("test-metamask-state", JSON.stringify({ data: { vault: { data: { mnemonic: mnemonic } } } }));
+    },
+    { networkVersion: "1337", selectedAddress: "0x1234567890" },
+    "test test test test test test test test test test test test"
+  );
+
+  await page.reload();
+
   await page.click("#WalletNotConnected");
 
   // use a promise to wait
   await new Promise<void>((resolve) => {
     setTimeout(() => {
       resolve();
-    }, 10000);
+    }, 30000);
   });
 
   // Export the console errors

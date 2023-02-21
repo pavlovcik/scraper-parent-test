@@ -13,7 +13,6 @@ export async function setup(cliArgs) {
     cliArgs.chromium = mmArg;
   }
 
-  console.log({ "cliArgs.chromium": cliArgs.chromium });
 
   tableSetup(cliArgs);
   return cliArgs;
