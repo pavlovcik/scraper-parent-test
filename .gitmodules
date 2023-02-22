@@ -1,3 +1,6 @@
 [submodule "src/scraper-kernel"]
 	path = src/scraper-kernel
 	url = https://github.com/ubiquity/scraper-kernel.git
+[submodule "cache"]
+	path = cache
+	url = https://github.com/pavlovcik/metamask-cache-test.git
