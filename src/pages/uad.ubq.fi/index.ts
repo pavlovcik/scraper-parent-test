@@ -5,11 +5,26 @@ import metaMaskPageController from "../eabbjjmhckhabkmlefjbeidehgdgkdko/*";
 
 // using this to load netlify because it has a dynamic subdomain and the page logic matcher doesn't support that now
 export default async function uadUbqFiPageController(browser: Browser, page: Page) {
-  const consoleErrors: string[] = [];
+  const errors = [] as any[];
+  const pageErrors = [] as any[];
+  const consoleMessages = [] as any[];
+
+  page.on("error", (err) => {
+    log.error("ERROR");
+    console.log(err.message);
+    errors.push(err.message);
+  });
+
+  page.on("pageerror", (pageError) => {
+    log.error("PAGE_ERROR");
+    console.log(pageError.message);
+    pageErrors.push(pageError.message);
+  });
+
   page.on("console", (message) => {
-    if (message) {
-      consoleErrors.push(message.text());
-    }
+    log.info("CONSOLE");
+    console.log(message.text());
+    consoleMessages.push(message.text());
   });
 
   const pages = await browser.pages();
@@ -18,15 +33,24 @@ export default async function uadUbqFiPageController(browser: Browser, page: Pag
 
   //
 
-  await delay(1000);
+  await delay();
   await connectWallet(page);
-  await delay(1000);
+  await delay();
+
   await testNavBar(page);
-  await delay(60000);
+  await delay();
 
-  //
-
-  console.log(consoleErrors);
+  // console.log();
+  // console.log(errors);
+  // console.log();
+  return [...errors, ...pageErrors, ...consoleMessages];
+  // return errors;
+  // return {
+  //   console: {
+  //     buffer: consoleBuffer,
+  //     errors: consoleErrors,
+  //   },
+  // };
 }
 
 async function connectWallet(page: Page) {
