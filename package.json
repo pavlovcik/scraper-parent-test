@@ -6,7 +6,7 @@
   },
   "scripts": {
     "start": "tsx src",
-    "start:with-metamask": "tsx src --disable-extensions-except=metamask --load-extension=metamask",
+    "start:cache": "tsx src https://uad.ubq.fi -h --chromium=\"--user-data-dir=cache\"",
     "test:ci": "tsx src/ https://github.com/pavlovcik https://github.com/transitive-bullshit",
     "test:types": "tsc --watch --noEmit",
     "utils:database-export": "tsx src/utils/github-api-enrichment/export-database",

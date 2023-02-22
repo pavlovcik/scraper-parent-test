@@ -42,13 +42,12 @@ export const cliOptions = [
     name: "chromium",
     type: Array,
     alias: "c",
-    description: "Pass flags directly to Chromium. Example: --chromium=\"--no-sandbox --disable-setuid-sandbox\"",
+    description: 'Pass flags directly to Chromium. Example: --chromium="--no-sandbox --disable-setuid-sandbox"',
   },
   {
     name: "metamask",
     type: String,
     alias: "m",
     description: "The path to the MetaMask extension zip file.",
-  }
-
+  },
 ];
