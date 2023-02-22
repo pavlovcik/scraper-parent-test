@@ -9,8 +9,8 @@ export default async function metaMaskPageController(browser: Browser, page: Pag
   } else if (title === "MetaMask") {
     await homeHtml(browser, page);
   } else {
-    log.error(`Unknown page title: ${title}`);
-    await page.close();
+    log.warn(`MetaMask: Unknown page title: "${title}"`);
+    // await page.close();
   }
 }
 
