@@ -22,7 +22,7 @@ export default async function metaMaskLoginWithPassword(browser: Browser, page: 
 }
 
 export async function pressMetaMaskNextButton(browser: Browser, page: Page) {
-  const next = await page.waitForSelector("button.button.btn--rounded.btn-primary", { timeout: 5000 });
+  const next = await page.waitForSelector("button.button.btn--rounded.btn-primary", { timeout: 1000 });
   next.click();
   return next;
 }

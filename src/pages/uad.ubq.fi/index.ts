@@ -22,14 +22,14 @@ export default async function uadUbqFiPageController(browser: Browser, page: Pag
   console.log(`> await walletConnectModal(page); `);
   await walletConnectModal(page);
 
-  console.log(`> await delay(5000); `)
-  await delay(5000);
+  console.log(`> await delay(2500); `)
+  await delay(2500);
 
   console.log(`> await huntForPopUp(browser);`);
   await huntForPopUp(browser);
 
-  console.log(`> await delay(5000); `)
-  await delay(5000);
+  console.log(`> await delay(2500); `)
+  await delay(2500);
 
   console.log(`> await testNavBar(page);`);
   await testNavBar(page);
