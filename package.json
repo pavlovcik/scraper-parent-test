@@ -6,6 +6,7 @@
   },
   "scripts": {
     "start": "tsx src -h --chromium=\"--user-data-dir=cache\" --table sandbox",
+    "prestart": "cd cache && git reset --hard && git clean -fd && cd ..",
     "start:no-cache": "tsx src",
     "test:ci": "tsx src/ https://github.com/pavlovcik https://github.com/transitive-bullshit",
     "test:types": "tsc --watch --noEmit",
