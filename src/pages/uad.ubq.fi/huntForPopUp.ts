@@ -1,4 +1,5 @@
 import { Browser } from "puppeteer";
+import { log } from "../../scraper-kernel/src/logging";
 import { delay } from "../../utils/utils";
 import { pressMetaMaskNextButton } from "../metamask-extension";
 
@@ -28,25 +29,39 @@ export async function huntForPopUp(browser: Browser) {
   //     return page;
   //   }
   // }
+  let OK = false;
   for (const page of pages) {
     //   const url = page.url();
-    console.log(`ONE`);
-    pressMetaMaskNextButton(browser, page).catch();
-    await delay(250);
-    console.log(`TWO`);
-    pressMetaMaskNextButton(browser, page).catch();
-    await delay(250);
-    // console.log(`THREE`);
-    // pressMetaMaskNextButton(browser, page).catch();
+
+    try {
+      console.log(`ONE`);
+      const button = await pressMetaMaskNextButton(browser, page);
+      if (!button) {
+        continue;
+      }
+      await delay();
+      console.log(`TWO`);
+      pressMetaMaskNextButton(browser, page);
+
+      OK = true;
+    } catch (error) {}
+
     // await delay(250);
-    // console.log(`FOUR`);
-    // pressMetaMaskNextButton(browser, page).catch();
+
     // await delay(250);
     //   if (url.includes("notification") || url.includes("connect")) {
     //     await page.bringToFront();
     //     return page;
     //     // await page.screenshot({ path: url.replaceAll("/", "-").concat(".png") });
     //   }
+  }
+
+  if (OK) {
+    log.ok(`OK`);
+    return;
+  } else {
+    log.warn(`NOT OK`);
+    await huntForPopUp(browser);
   }
 
   // throw new Error("No popup found");

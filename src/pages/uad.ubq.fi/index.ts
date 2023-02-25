@@ -11,31 +11,26 @@ import { walletConnectModal } from "./walletConnectModal";
 export default async function uadUbqFiPageController(browser: Browser, page: Page) {
   const { errors, pageErrors, consoleMessages } = captureLogs(page);
 
-  await delay(2500);
   console.log(`> let lastPage = await getLastPage(browser); `);
   let lastPage = await getLastPage(browser);
-  console.log(`> await delay(2500); `);
-  await delay(2500);
   console.log(`> await metaMaskLoginWithPassword(browser, lastPage); `);
   await metaMaskLoginWithPassword(browser, lastPage);
-  console.log(`> await delay(2500); `);
-  await delay(2500);
   console.log(`> await pressMetaMaskNextButton(browser, lastPage); `);
   await pressMetaMaskNextButton(browser, lastPage);
-  console.log(`> await delay(2500); `);
-  await delay(2500);
   console.log(`> await page.bringToFront(); `);
   await page.bringToFront();
-  console.log(`> await delay(2500); `);
-  await delay(2500);
   console.log(`> await walletConnectModal(page); `);
   await walletConnectModal(page);
-  console.log(`> await delay(2500); `);
-  await delay(2500);
+
+  console.log(`> await delay(5000); `)
+  await delay(5000);
+
   console.log(`> await huntForPopUp(browser);`);
   await huntForPopUp(browser);
-  console.log(`> await delay(2500); `);
-  await delay(2500);
+
+  console.log(`> await delay(5000); `)
+  await delay(5000);
+
   console.log(`> await testNavBar(page);`);
   await testNavBar(page);
 
