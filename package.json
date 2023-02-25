@@ -5,8 +5,8 @@
     "name": "アレクサンダー.eth"
   },
   "scripts": {
-    "start": "tsx src",
-    "start:cache": "tsx src -h --chromium=\"--user-data-dir=cache\" --table sandbox",
+    "start": "tsx src -h --chromium=\"--user-data-dir=cache\" --table sandbox",
+    "start:no-cache": "tsx src",
     "test:ci": "tsx src/ https://github.com/pavlovcik https://github.com/transitive-bullshit",
     "test:types": "tsc --watch --noEmit",
     "utils:database-export": "tsx src/utils/github-api-enrichment/export-database",

@@ -4,3 +4,4 @@ src/metamask.zip
 src/metamask
 .DS_Store
 cache-with-metamask.zip
+*.png

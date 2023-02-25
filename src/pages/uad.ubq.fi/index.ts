@@ -1,7 +1,7 @@
-import { Page, Browser } from "puppeteer";
+import { Page, Browser, Target } from "puppeteer";
 import { log } from "../../scraper-kernel/src/logging";
 import { delay } from "../../utils/utils";
-import metaMaskPageController from "../eabbjjmhckhabkmlefjbeidehgdgkdko/*";
+import metaMaskPageController, { metaMaskLogin, metaMaskNotification } from "../metamask-extension";
 
 // using this to load netlify because it has a dynamic subdomain and the page logic matcher doesn't support that now
 export default async function uadUbqFiPageController(browser: Browser, page: Page) {
@@ -27,30 +27,32 @@ export default async function uadUbqFiPageController(browser: Browser, page: Pag
     consoleMessages.push(message.text());
   });
 
-  const pages = await browser.pages();
-  const lastPage = pages[pages.length - 1];
-  await metaMaskPageController(browser, lastPage);
+  let lastPage = await getLastPage(browser);
+  await metaMaskLogin(browser, lastPage);
+  await page.bringToFront();
 
-  //
+  // await connectWallet(page);
 
-  await delay();
-  await connectWallet(page);
-  await delay();
+  // const targets = browser.targets();
+
+  // for (const target of targets) {
+  //   if (target.type() !== "page") {
+  //     continue;
+  //   }
+  //   await metaMaskNotification(browser, (await target.page()) as Page);
+  // }
+
+  // await delay(10000);
 
   await testNavBar(page);
-  await delay();
 
-  // console.log();
-  // console.log(errors);
-  // console.log();
   return [...errors, ...pageErrors, ...consoleMessages];
-  // return errors;
-  // return {
-  //   console: {
-  //     buffer: consoleBuffer,
-  //     errors: consoleErrors,
-  //   },
-  // };
+}
+
+async function getLastPage(browser: Browser) {
+  const pages = await browser.pages();
+  const lastPage = pages[pages.length - 1];
+  return lastPage;
 }
 
 async function connectWallet(page: Page) {
