@@ -25,10 +25,6 @@ export async function huntForPopUp(browser: Browser) {
     } catch (error) {}
   }
 
-  // for (const page of pages) {
-
-  // }
-
   if (OK) {
     log.ok(`OK`);
     return;

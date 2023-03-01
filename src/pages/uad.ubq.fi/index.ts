@@ -8,56 +8,56 @@ import { testNavBar } from "./testNavBar";
 import { walletConnectModal } from "./walletConnectModal";
 
 // using this to load netlify because it has a dynamic subdomain and the page logic matcher doesn't support that now
-export default async function uadUbqFiPageController(browser: Browser, page: Page) {
-  const { errors, pageErrors, consoleMessages } = captureLogs(page);
-
-  console.log(`> let lastPage = await getLastPage(browser); `);
+export default async function uadUbqFiPageController(browser: Browser, ubiquityDappPage: Page) {
+  const consoleMessages = captureLogs(ubiquityDappPage);
   let lastPage = await getLastPage(browser);
-  console.log(`> await metaMaskLoginWithPassword(browser, lastPage); `);
   await metaMaskLoginWithPassword(browser, lastPage);
-  console.log(`> await pressMetaMaskNextButton(browser, lastPage); `);
   await pressMetaMaskNextButton(browser, lastPage);
-  console.log(`> await page.bringToFront(); `);
-  await page.bringToFront();
-  console.log(`> await walletConnectModal(page); `);
-  await walletConnectModal(page);
-
-  // console.log(`> await delay(2500); `)
-  // await delay(2500);
-
-  console.log(`> await huntForPopUp(browser);`);
+  await ubiquityDappPage.bringToFront();
+  await walletConnectModal(ubiquityDappPage);
   await huntForPopUp(browser);
-
-  // console.log(`> await delay(2500); `)
-  // await delay(2500);
-
-  console.log(`> await testNavBar(page);`);
-  await testNavBar(page);
-
-  return [...errors, ...pageErrors, ...consoleMessages];
+  await testNavBar(ubiquityDappPage);
+  return consoleMessages;
 }
 
 function captureLogs(page: Page) {
-  const errors = [] as any[];
-  const pageErrors = [] as any[];
-  const consoleMessages = [] as any[];
+  // const errors = [] as any[];
+  // const pageErrors = [] as any[];
+  // const consoleMessages = [] as any[];
+  let consoleMessages = {};
+  // page.on("error", (err) => {
+  //   log.error("ERROR");
+  //   errors.push(err.message);
+  // });
 
-  page.on("error", (err) => {
-    log.error("ERROR");
-    console.log(err.message);
-    errors.push(err.message);
-  });
+  // page.on("pageerror", (pageError) => {
+  //   log.error("PAGE_ERROR");
+  //   pageErrors.push(pageError.message);
+  // });
 
-  page.on("pageerror", (pageError) => {
-    log.error("PAGE_ERROR");
-    console.log(pageError.message);
-    pageErrors.push(pageError.message);
-  });
+  // page.on("console", (message) => {
+  //   log.info("CONSOLE");
+  //   consoleMessages.push(message.text());
+  // });
 
   page.on("console", (message) => {
-    log.info("CONSOLE");
-    console.log(message.text());
-    consoleMessages.push(message.text());
+    if (!consoleMessages[message.type()]) {
+      consoleMessages[message.type()] = [];
+    }
+    consoleMessages[message.type()].push({
+      text: message.text(),
+      location: message.location(),
+      args: message.args(),
+    });
+
+    log.info(message.text());
+
   });
-  return { errors, pageErrors, consoleMessages };
+
+  //   page.on('requestfailed', request => {
+  //     log.error(`Request failed: ${request.url()}`)
+  //     errors.push(request.failure().errorText);
+  // });
+  return consoleMessages;
+  // return { errors, pageErrors, consoleMessages };
 }
