@@ -21,24 +21,7 @@ export default async function uadUbqFiPageController(browser: Browser, ubiquityD
 }
 
 function captureLogs(page: Page) {
-  // const errors = [] as any[];
-  // const pageErrors = [] as any[];
-  // const consoleMessages = [] as any[];
   let consoleMessages = {};
-  // page.on("error", (err) => {
-  //   log.error("ERROR");
-  //   errors.push(err.message);
-  // });
-
-  // page.on("pageerror", (pageError) => {
-  //   log.error("PAGE_ERROR");
-  //   pageErrors.push(pageError.message);
-  // });
-
-  // page.on("console", (message) => {
-  //   log.info("CONSOLE");
-  //   consoleMessages.push(message.text());
-  // });
 
   page.on("console", (message) => {
     if (!consoleMessages[message.type()]) {
@@ -51,13 +34,7 @@ function captureLogs(page: Page) {
     });
 
     log.info(message.text());
-
   });
 
-  //   page.on('requestfailed', request => {
-  //     log.error(`Request failed: ${request.url()}`)
-  //     errors.push(request.failure().errorText);
-  // });
   return consoleMessages;
-  // return { errors, pageErrors, consoleMessages };
 }
