@@ -6,30 +6,15 @@ import { pressMetaMaskNextButton } from "../metamask-extension";
 export async function huntForPopUp(browser: Browser) {
   const pages = await browser.pages();
 
-  let OK = false;
 
-  let x = pages.length;
-  while (x--) {
-    const page = pages[x];
-    try {
-      console.log(`ONE`);
-      const button = await pressMetaMaskNextButton(browser, page);
-      if (!button) {
-        continue;
-      }
-      await delay();
-      console.log(`TWO`);
-      await pressMetaMaskNextButton(browser, page);
-
-      OK = true;
-    } catch (error) {}
-  }
-
-  if (OK) {
+  const page = pages[pages.length - 1];
+  try {
+    await page.click("button.button.btn--rounded.btn-primary");
+    await delay(500);
+    await pressMetaMaskNextButton(browser, page);
     log.ok(`OK`);
     return;
-  } else {
-    log.warn(`NOT OK`);
-    await huntForPopUp(browser);
+  } catch (error) {
+    return await huntForPopUp(browser); // try again
   }
 }
