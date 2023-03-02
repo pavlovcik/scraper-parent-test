@@ -18,7 +18,6 @@ jobs:
         env:
           PUPPETEER_SKIP_DOWNLOAD: true
         run: |
-          su root
           apt-get update
           apt-get install -y libx11-xcb1 libxtst6 libxss1 libgconf-2-4 libnss3 libasound2 xvfb
           yarn install
