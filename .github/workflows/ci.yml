@@ -29,15 +29,14 @@ jobs:
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
         run: |
           # See https://crbug.com/795759
-          apt-get update
           # Install latest chrome dev package, which installs the necessary libs to make the bundled version of Chromium that Puppeteer installs work.
-          apt-get install -yq libgconf-2-4
-          apt-get install -y wget xvfb --no-install-recommends
-          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
-          sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-          apt-get update
-          apt-get install -y google-chrome-stable --no-install-recommends
-          rm -rf /var/lib/apt/lists/*
+          sudo apt-get install -yq libgconf-2-4
+          sudo apt-get install -y wget xvfb --no-install-recommends
+          sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
+          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+          sudo apt-get update
+          sudo apt-get install -y google-chrome-stable --no-install-recommends
+          sudo rm -rf /var/lib/apt/lists/*
 
       - name: Start Xvfb
         run: Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
