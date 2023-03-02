@@ -8,6 +8,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
       - name: Install dependencies
         env:
           PUPPETEER_SKIP_DOWNLOAD: true
@@ -17,18 +18,32 @@ jobs:
           yarn install
           git submodule init
           git submodule update
+
       - name: Start Xvfb
         run: Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+
       - name: Install Chrome r1095492
         run: |
           wget https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2F1095492%2Fchrome-linux.zip?alt=media -O chrome.zip
           unzip chrome.zip
-      - name: Test Code
-        uses: mujo-code/puppeteer-headful@18.9.0
+
+      - name: Start Chrome
+        run: |
+          ./chrome-linux/chrome --remote-debugging-port=9222 http://localhost &
+          # ./chrome-linux/chrome --no-sandbox --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+
+      - name: Set up Node.js v18.14.2
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.14.2
+
+      - name: Run scraper
+        run: |
+          yarn start:no-sandbox https://uad.ubq.fi/
         env:
-          PUPPETEER_EXECUTABLE_PATH: /home/runner/work/scraper-parent-test/scraper-parent-test/chrome-linux/chrome
-          PUPPETEER_HEADLESS: "false"
+          # PUPPETEER_EXECUTABLE_PATH: /home/runner/work/scraper-parent-test/scraper-parent-test/chrome-linux/chrome
+          # PUPPETEER_HEADLESS: "false"
           DISPLAY: ":99"
-          CI: "true"
+          # CI: "true"
         with:
           args: yarn start:no-sandbox https://uad.ubq.fi/
