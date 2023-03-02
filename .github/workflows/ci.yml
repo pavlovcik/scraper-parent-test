@@ -9,6 +9,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Install dependencies
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: true
         run: |
           sudo apt-get update
           sudo apt-get install -y libx11-xcb1 libxtst6 libxss1 libgconf-2-4 libnss3 libasound2 xvfb
@@ -21,12 +23,9 @@ jobs:
         run: |
           wget https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2F1095492%2Fchrome-linux.zip?alt=media -O chrome.zip
           unzip chrome.zip
-          # && rm chrome.zip && mv chrome-linux /usr/local/share/
-          # ln -s /usr/local/share/chrome-linux/chrome /usr/bin/google-chrome-stable
       - name: Test Code
         uses: mujo-code/puppeteer-headful@16.6.0
         env:
-          PUPPETEER_SKIP_DOWNLOAD: true
           PUPPETEER_EXECUTABLE_PATH: /usr/local/share/chrome-linux/chrome
           PUPPETEER_HEADLESS: "false"
           DISPLAY: ":99"
