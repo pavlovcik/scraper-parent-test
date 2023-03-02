@@ -39,6 +39,9 @@ async function getMetaMaskLatestDownloadUrl() {
   const json = (await response.json()) as MetaMaskResponse;
   console.log(json);
   const chromeAsset = json.assets.find((a) => a.name.includes("metamask-chrome"));
+  if (!chromeAsset) {
+    throw new Error(`No chrome asset found in ${json.assets.map((a) => a.name).join(", ")}`);
+  }
   return chromeAsset.browser_download_url;
 }
 
