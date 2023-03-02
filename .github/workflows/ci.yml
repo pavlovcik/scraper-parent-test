@@ -47,9 +47,9 @@ jobs:
 
        ########################################
 
-      - name: ADD CHROME OR CHROMIUM TO PATH
-        run: |
-          echo "export PATH=\$PATH:/chrome-linux/chrome" >> $GITHUB_ENV
+      # - name: ADD CHROME OR CHROMIUM TO PATH
+      #   run: |
+      #     echo "export PATH=\$PATH:/chrome-linux/chrome" >> $GITHUB_ENV
 
       ########################################
 
@@ -59,6 +59,7 @@ jobs:
           export DISPLAY=:99
           echo "Xvfb is running on display $DISPLAY"
           # ./chrome-linux/chrome --remote-debugging-port=9222 http://0.0.0.0 &
+          find . -name chrome
           yarn start:no-sandbox https://uad.ubq.fi/
         env:
           DISPLAY: ":99"
