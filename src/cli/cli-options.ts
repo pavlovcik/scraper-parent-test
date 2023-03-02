@@ -50,4 +50,10 @@ export const cliOptions = [
     alias: "m",
     description: "The path to the MetaMask extension zip file.",
   },
+  {
+    name: "executablePath",
+    type: String,
+    alias: "e",
+    description: "The path to the Chromium executable.",
+  },
 ];
