@@ -6,7 +6,6 @@ jobs:
   puppeteer:
     runs-on: ubuntu-latest
     steps:
-
       - name: Set up Node.js v18.14.2
         uses: actions/setup-node@v3
         with:
@@ -55,12 +54,9 @@ jobs:
           # ./chrome-linux/chrome --no-sandbox --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
 
       - name: Run scraper
+        with:
+          args: yarn start:no-sandbox https://uad.ubq.fi/
         run: |
           yarn start:no-sandbox https://uad.ubq.fi/
         env:
-          # PUPPETEER_EXECUTABLE_PATH: /home/runner/work/scraper-parent-test/scraper-parent-test/chrome-linux/chrome
-          # PUPPETEER_HEADLESS: "false"
           DISPLAY: ":99"
-          # CI: "true"
-        with:
-          args: yarn start:no-sandbox https://uad.ubq.fi/
