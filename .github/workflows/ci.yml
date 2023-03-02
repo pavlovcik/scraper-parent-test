@@ -34,7 +34,8 @@ jobs:
 
       - name: Install Chrome r1095492
         run: |
-          wget https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2F1095492%2Fchrome-linux.zip?alt=media -O chrome.zip
+          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor | sudo tee /usr/share/keyrings/google-cloud-packages-archive-keyring.gpg >/dev/null 2>&1
+          # wget https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2F1095492%2Fchrome-linux.zip?alt=media -O chrome.zip
           unzip chrome.zip
 
       - name: Start Chrome
