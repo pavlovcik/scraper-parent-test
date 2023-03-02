@@ -8,19 +8,19 @@ jobs:
     steps:
       ########################################
 
-      - name: Set up Node.js v18.14.2
+      - name: SET UP NODE.JS V18.14.2
         uses: actions/setup-node@v3
         with:
           node-version: 18.14.2
 
       ########################################
 
-      - name: Checkout code
+      - name: CHECKOUT CODE
         uses: actions/checkout@v3
 
       ########################################
 
-      - name: Install dependencies
+      - name: INSTALL DEPENDENCIES
 
         run: |
           sudo apt-get update
@@ -28,12 +28,7 @@ jobs:
 
       ########################################
 
-      - name: Start Xvfb
-        run: Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-
-      ########################################
-
-      - name: Install Chrome r1095492
+      - name: INSTALL CHROME R1095492
         run: |
           wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor | sudo tee /usr/share/keyrings/google-cloud-packages-archive-keyring.gpg >/dev/null 2>&1
           wget https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2F1095492%2Fchrome-linux.zip?alt=media -O chrome.zip
@@ -41,13 +36,20 @@ jobs:
 
       ########################################
 
-      - name: Start Chrome
+      - name: START XVFB
+        run: |
+          Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+          echo $DISPLAY
+
+      ########################################
+
+      - name: START CHROME
         run: |
           ./chrome-linux/chrome --remote-debugging-port=9222 http://localhost &
 
       ########################################
 
-      - name: Install scraper dependencies
+      - name: INSTALL SCRAPER DEPENDENCIES
         env:
           PUPPETEER_SKIP_DOWNLOAD: true
         run: |
@@ -57,7 +59,7 @@ jobs:
 
       ########################################
 
-      - name: Run scraper
+      - name: RUN SCRAPER
         run: |
           yarn start:no-sandbox https://uad.ubq.fi/
         env:
