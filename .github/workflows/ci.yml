@@ -21,8 +21,7 @@ jobs:
       ########################################
 
       - name: Install dependencies
-        # env:
-          # PUPPETEER_SKIP_DOWNLOAD: true
+
         run: |
           sudo apt-get update
           sudo apt-get install -y libx11-xcb1 libxtst6 libxss1 libgconf-2-4 libnss3 libasound2 xvfb
@@ -49,6 +48,8 @@ jobs:
       ########################################
 
       - name: Install scraper dependencies
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: true
         run: |
           yarn install
           git submodule init
