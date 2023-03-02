@@ -16,7 +16,7 @@
     "format": "run-s format:*",
     "format:prettier": "prettier --write src",
     "format:eslint": "eslint . --ext .ts --cache --fix --plugin tsc --rule 'tsc/config: [2, { configFile: ./tsconfig.json }]'",
-    "_dev:ci": "nodemon -e yml --exec \"git commit -am 'fix: ci' && git push\""
+    "_dev:ci": "nodemon -e .yml --exec \"git commit -am 'fix: ci' && git push\""
   },
   "lint-staged": {
     "*.{ts}": "prettier --write"
