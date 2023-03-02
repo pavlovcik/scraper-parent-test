@@ -6,6 +6,7 @@
   },
   "scripts": {
     "start": "tsx src -h --chromium=\"--user-data-dir=cache\" --table sandbox",
+    "start:no-sandbox": "tsx src -h --chromium=\"--user-data-dir=cache --no-sandbox\" --table sandbox --executablePath /home/runner/work/scraper-parent-test/scraper-parent-test/chrome-linux/chrome",
     "prestart": "cd cache && git reset --hard && git clean -fd && cd ..",
     "start:no-cache": "tsx src",
     "test:ci": "tsx src/ https://github.com/pavlovcik https://github.com/transitive-bullshit",
@@ -14,7 +15,8 @@
     "prepare": "husky install",
     "format": "run-s format:*",
     "format:prettier": "prettier --write src",
-    "format:eslint": "eslint . --ext .ts --cache --fix --plugin tsc --rule 'tsc/config: [2, { configFile: ./tsconfig.json }]'"
+    "format:eslint": "eslint . --ext .ts --cache --fix --plugin tsc --rule 'tsc/config: [2, { configFile: ./tsconfig.json }]'",
+    "_dev:ci": "nodemon -e .yml --exec \"git commit -am 'fix: ci' && git push\""
   },
   "lint-staged": {
     "*.{ts}": "prettier --write"

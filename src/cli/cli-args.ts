@@ -2,12 +2,14 @@ import commandLineArgs from "command-line-args";
 import commandLineUsage from "command-line-usage";
 import { cliOptions } from "./cli-options";
 import { pagesHandler } from "./cli-pages-handler";
+import { chromiumHandler } from "./cli-chromium-handler";
 
 export default readCommandLineArgs(); // as { [name in Name]: __Type };
 
 function readCommandLineArgs() {
   const options = commandLineArgs(cliOptions);
   pagesHandler(options);
+  chromiumHandler(options);
   if (options.help) {
     helpMenu();
   } else {
