@@ -29,9 +29,6 @@ jobs:
         env:
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
         run: |
-          su root
-          # See https://crbug.com/795759
-          # Install latest chrome dev package, which installs the necessary libs to make the bundled version of Chromium that Puppeteer installs work.
           apt-get install -yq libgconf-2-4
           apt-get install -y wget xvfb --no-install-recommends
           wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
@@ -51,7 +48,6 @@ jobs:
       - name: Start Chrome
         run: |
           ./chrome-linux/chrome --remote-debugging-port=9222 http://localhost &
-          # ./chrome-linux/chrome --no-sandbox --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
 
       - name: Run scraper
         run: |
