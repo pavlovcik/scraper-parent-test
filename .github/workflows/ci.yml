@@ -58,7 +58,7 @@ jobs:
           Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
           export DISPLAY=:99
           echo "Xvfb is running on display $DISPLAY"
-          ./chrome-linux/chrome --remote-debugging-port=9222 http://127.0.0.1 &
+          ./chrome-linux/chrome --remote-debugging-port=9222 http://0.0.0.0 &
           yarn start:no-sandbox https://uad.ubq.fi/
         env:
           DISPLAY: ":99"
