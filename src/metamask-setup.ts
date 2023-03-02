@@ -37,7 +37,6 @@ async function downloadNewCopy(zipPath: string) {
 async function getMetaMaskLatestDownloadUrl() {
   const response = await fetch("https://api.github.com/repos/MetaMask/metamask-extension/releases/latest");
   const json = (await response.json()) as MetaMaskResponse;
-  console.log(json);
   const chromeAsset = json.assets.find((a) => a.name.includes("metamask-chrome"));
   if (!chromeAsset) {
     throw new Error(`No chrome asset found in ${json.assets.map((a) => a.name).join(", ")}`);
