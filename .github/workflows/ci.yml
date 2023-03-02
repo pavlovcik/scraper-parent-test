@@ -23,15 +23,10 @@ jobs:
         run: |
           wget https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2F1095492%2Fchrome-linux.zip?alt=media -O chrome.zip
           unzip chrome.zip
-          pwd
-      # - name: Set up Node.js v18.14.2
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: 18.14.2
       - name: Test Code
         uses: mujo-code/puppeteer-headful@18.9.0
         env:
-          PUPPETEER_EXECUTABLE_PATH: /usr/local/share/chrome-linux/chrome
+          PUPPETEER_EXECUTABLE_PATH: /home/runner/work/scraper-parent-test/scraper-parent-test/chrome-linux/chrome
           PUPPETEER_HEADLESS: "false"
           DISPLAY: ":99"
           CI: "true"
