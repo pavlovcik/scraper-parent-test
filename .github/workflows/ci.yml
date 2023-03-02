@@ -25,6 +25,7 @@ jobs:
       - name: Test Code
         uses: mujo-code/puppeteer-headful@16.6.0
         env:
+          PUPPETEER_SKIP_DOWNLOAD: true
           PUPPETEER_EXECUTABLE_PATH: /usr/local/share/chrome-linux/chrome
           PUPPETEER_HEADLESS: "false"
           DISPLAY: ":99"
