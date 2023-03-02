@@ -21,7 +21,7 @@ jobs:
         run: |
           wget https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2F1095492%2Fchrome-linux.zip?alt=media -O chrome.zip
           unzip chrome.zip && rm chrome.zip && mv chrome-linux /usr/local/share/
-          ln -s /usr/local/share/chrome-linux/chrome /usr/bin/google-chrome-stable
+          # ln -s /usr/local/share/chrome-linux/chrome /usr/bin/google-chrome-stable
       - name: Test Code
         uses: mujo-code/puppeteer-headful@16.6.0
         env:
