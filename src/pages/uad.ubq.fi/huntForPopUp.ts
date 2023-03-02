@@ -5,8 +5,6 @@ import { pressMetaMaskNextButton } from "../metamask-extension";
 
 export async function huntForPopUp(browser: Browser) {
   const pages = await browser.pages();
-
-
   const page = pages[pages.length - 1];
   try {
     await page.click("button.button.btn--rounded.btn-primary");

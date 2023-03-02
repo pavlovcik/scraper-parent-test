@@ -30,7 +30,7 @@ function captureLogs(page: Page) {
     consoleMessages[message.type()].push({
       text: message.text(),
       location: message.location(),
-      args: message.args(),
+      // args: message.args(),
     });
 
     log.info(message.text());
