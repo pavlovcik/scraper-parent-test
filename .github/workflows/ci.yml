@@ -50,6 +50,7 @@ jobs:
       - name: START XVFB & CHROME
         run: |
           Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+          export DISPLAY=:99
           sleep 3 # wait for Xvfb to start up
           echo "Xvfb is running on display $DISPLAY"
           ./chrome-linux/chrome --remote-debugging-port=9222 http://localhost &
