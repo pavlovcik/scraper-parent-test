@@ -2,5 +2,5 @@
 yarn
 git submodule init
 git submodule update
-yarn start:cache https://uad.ubq.fi
+yarn start https://uad.ubq.fi
 ```
