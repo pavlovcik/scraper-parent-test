@@ -56,6 +56,12 @@ jobs:
 
       ########################################
 
+      - name: Add Chrome or Chromium to PATH
+        run: |
+          echo "export PATH=\$PATH:/chrome-linux/chrome" >> $GITHUB_ENV
+
+      ########################################
+
       - name: RUN SCRAPER
         run: |
           yarn start:no-sandbox https://uad.ubq.fi/
