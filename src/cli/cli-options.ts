@@ -40,7 +40,7 @@ export const cliOptions = [
   },
   {
     name: "chromium",
-    type: Array,
+    type: String,
     alias: "c",
     description: 'Pass flags directly to Chromium. Example: --chromium="--no-sandbox --disable-setuid-sandbox"',
   },

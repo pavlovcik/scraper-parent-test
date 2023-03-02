@@ -31,4 +31,4 @@ jobs:
           DISPLAY: ":99"
           CI: "true"
         with:
-          args: yarn start https://uad.ubq.fi/
+          args: yarn start:no-sandbox https://uad.ubq.fi/
