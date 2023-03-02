@@ -36,15 +36,15 @@ jobs:
 
       ########################################
 
-      - name: START XVFB
-        run: |
-          Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-          echo $DISPLAY
+      # - name: START XVFB
+        # run: |
 
       ########################################
 
-      - name: START CHROME
+      - name: START XVFB & CHROME
         run: |
+          Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+          echo $DISPLAY
           ./chrome-linux/chrome --remote-debugging-port=9222 http://localhost &
 
       ########################################
