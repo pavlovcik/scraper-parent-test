@@ -6,6 +6,12 @@ jobs:
   puppeteer:
     runs-on: ubuntu-latest
     steps:
+
+      - name: Set up Node.js v18.14.2
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.14.2
+
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -47,11 +53,6 @@ jobs:
         run: |
           ./chrome-linux/chrome --remote-debugging-port=9222 http://localhost &
           # ./chrome-linux/chrome --no-sandbox --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
-
-      - name: Set up Node.js v18.14.2
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18.14.2
 
       - name: Run scraper
         run: |
