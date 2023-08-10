@@ -8,7 +8,7 @@ setup(cliArgs).then((cliArgs) => {
   scrape(cliArgs as UserSettings)
     .then((data) => {
       // flatten and display all the details of data
-      console.info(`<<`, util.inspect(data, { showHidden: false, depth: null }));
+      log.info(`<<`, util.inspect(data, { showHidden: false, depth: null }));
       process.exit(0);
     })
     .catch((err) => {

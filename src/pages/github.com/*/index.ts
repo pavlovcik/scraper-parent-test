@@ -149,7 +149,7 @@ async function scrapePersonalProfile(page, contributions) {
     fs.appendFile(
       `buffer.csv`,
       buffer.concat("\n"),
-      (error) => error && console.error(error)
+      (error) => error && log.info(error)
     );
   }
 
@@ -170,18 +170,18 @@ async function scrapePersonalProfile(page, contributions) {
   fs.appendFile(
     `buffer.csv`,
     [new Date(), ...row].join(",").concat("\n"),
-    (error) => error && console.error(error)
+    (error) => error && log.info(error)
   );
-  // console.log({ tableName });
+  // log.info({ tableName });
   const response = await supabase
     .from(tableName)
     .upsert(profile, { onConflict: "login" });
 
   if (response.error) {
-    console.log(`response.error`);
-    console.error(response);
-    console.log(`response.error stringified`);
-    console.error(JSON.stringify(response));
+    // log.info(`response.error`);
+    log.error(response);
+    // log.info(`response.error stringified`);
+    // log.info(JSON.stringify(response));
     throw new Error(`Supabase error!`);
   }
   return profile;
