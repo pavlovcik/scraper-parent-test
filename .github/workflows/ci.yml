@@ -57,8 +57,9 @@ jobs:
           Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
           export DISPLAY=:99
           echo "Xvfb is running on display $DISPLAY"
-          ./chrome-linux/chrome --remote-debugging-port=9222 http://0.0.0.0 &
-          yarn tsx src -h '--chromium=--user-data-dir=cache --no-sandbox' --table sandbox --executablePath=chrome-linux/chrome https://uad.ubq.fi/
+          USER_DATA_DIR=$(mktemp -d -t chrome-user-data-XXXX)
+          # ./chrome-linux/chrome --remote-debugging-port=9222 --user-data-dir=$USER_DATA_DIR --no-sandbox --disable-software-rasterizer --disable-dev-shm-usage --disable-gpu http://0.0.0.0 &
+          yarn tsx src -h "--chromium=--user-data-dir=$USER_DATA_DIR --no-sandbox --disable-software-rasterizer --disable-dev-shm-usage --disable-gpu" --table sandbox --executablePath=chrome-linux/chrome https://uad.ubq.fi/
 
         env:
           DISPLAY: ":99"
