@@ -61,7 +61,7 @@ jobs:
           # find . -name chrome
           # find "$(pwd)" -name chrome -type f -exec realpath {} \;
           # yarn start:no-sandbox --executablePath="$(pwd)/chrome-linux/chrome-linux/chrome" https://uad.ubq.fi/
-          tsx src -h --chromium="--user-data-dir=cache --no-sandbox" --table sandbox --executablePath=/home/runner/work/scraper-parent-test/scraper-parent-test/chrome-linux/chrome-linux/chrome https://uad.ubq.fi/
+          yarn tsx src -h --chromium="--user-data-dir=cache --no-sandbox" --table sandbox --executablePath=/home/runner/work/scraper-parent-test/scraper-parent-test/chrome-linux/chrome-linux/chrome https://uad.ubq.fi/
         env:
           DISPLAY: ":99"
           PAGES_PATH: "src/pages"
