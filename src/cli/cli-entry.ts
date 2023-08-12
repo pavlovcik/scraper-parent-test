@@ -6,12 +6,12 @@ import util from "util";
 
 setup(cliArgs).then((cliArgs) => {
   scrape(cliArgs as UserSettings)
-    .then((data) => {
+    .then(function rootSuccess(data) {
       // flatten and display all the details of data
       log.info(`<<`, util.inspect(data, { showHidden: false, depth: null }));
       process.exit(0);
     })
-    .catch((err) => {
+    .catch(function rootCrash(err) {
       log.error(err);
       process.exit(1);
     });
