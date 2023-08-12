@@ -27,7 +27,7 @@ jobs:
           sudo apt-get install -y libx11-xcb1 libxtst6 libxss1 libgconf-2-4 libnss3 libasound2 xvfb
           sudo apt-get install xserver-xorg-core
 
-     ########################################
+      ########################################
 
       - name: INSTALL SCRAPER DEPENDENCIES
         env:
@@ -38,14 +38,13 @@ jobs:
           git submodule update
 
       ########################################
-
       - name: INSTALL CHROME R1095492
         run: |
           wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor | sudo tee /usr/share/keyrings/google-cloud-packages-archive-keyring.gpg >/dev/null 2>&1
           wget https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2F1095492%2Fchrome-linux.zip?alt=media -O chrome.zip
           unzip chrome.zip
 
-       ########################################
+        ########################################
 
       # - name: ADD CHROME OR CHROMIUM TO PATH
       #   run: |
@@ -64,5 +63,6 @@ jobs:
           yarn start:no-sandbox https://uad.ubq.fi/
         env:
           DISPLAY: ":99"
+          PAGES_PATH: "src/pages"
 
       ########################################
