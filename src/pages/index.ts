@@ -1,5 +1,6 @@
 import { Browser, Page } from "puppeteer";
 import { log } from "../scraper-kernel/src/logging";
+import { PAGES_PATH } from "./PAGES_PATH";
 // import metaMaskPageController from "./metamask-extension";
 // import metaMaskPageController from "./metamask";
 export default async function defaultPageController(browser: Browser, page: Page) {
@@ -9,7 +10,7 @@ export default async function defaultPageController(browser: Browser, page: Page
   _url.shift();
 
   const url = _url.join("/");
-  log.error(`This page doesn't have a page controller. Please add one to src/pages/${url}/index.ts`);
+  log.error(`This page doesn't have a page controller. Please add one to ${PAGES_PATH}/${url}/index.ts`);
 
   // log.info(`Trying MetaMask's default page controller...`);
   // await metaMaskPageController(browser, page);
