@@ -1,6 +1,5 @@
 import { Browser, Page } from "puppeteer";
 import { log } from "../../scraper-kernel/src/logging";
-import { delay } from "../../utils/utils";
 import metaMaskLoginWithPassword, { pressMetaMaskNextButton } from "../metamask-extension";
 import { getLastPage } from "./getLastPage";
 import { huntForPopUp } from "./huntForPopUp";
@@ -8,7 +7,9 @@ import { testNavBar } from "./testNavBar";
 import { walletConnectModal } from "./walletConnectModal";
 
 // using this to load netlify because it has a dynamic subdomain and the page logic matcher doesn't support that now
+console.trace();
 export default async function uadUbqFiPageController(browser: Browser, ubiquityDappPage: Page) {
+  console.trace();
   const consoleMessages = captureLogs(ubiquityDappPage);
   let lastPage = await getLastPage(browser);
   await metaMaskLoginWithPassword(browser, lastPage);

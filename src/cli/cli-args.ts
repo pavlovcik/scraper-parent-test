@@ -14,7 +14,7 @@ function readCommandLineArgs() {
   if (options.help) {
     helpMenu();
   } else {
-    log.info(`<<`, options);
+    log.info(`⚙️`, options);
   }
   return options;
 }
