@@ -60,7 +60,7 @@ jobs:
           # ./chrome-linux/chrome --remote-debugging-port=9222 http://0.0.0.0 &
           # find . -name chrome
           # find "$(pwd)" -name chrome -type f -exec realpath {} \;
-          yarn start:no-sandbox https://uad.ubq.fi/
+          yarn start:no-sandbox --executablePath="$(pwd)/chrome-linux/chrome-linux/chrome" https://uad.ubq.fi/
         env:
           DISPLAY: ":99"
           PAGES_PATH: "src/pages"
