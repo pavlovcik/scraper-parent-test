@@ -4,6 +4,7 @@ import commandLineArgs from "../../cli/cli-args";
 import grab from "./fetch-from-supabase";
 import writeCsvToDisk from "./json2csv";
 import { resolveProjectPath } from "../../scraper-kernel/src/boot/events/search-for-import";
+import { log } from "../../scraper-kernel/src/logging";
 
 const tableName = commandLineArgs.table as string;
 
@@ -17,7 +18,7 @@ async function _wrapper() {
       `database-export-${date}.csv`
     );
     writeCsvToDisk(headers, data, filename);
-    console.log(`wrote ${data.length} rows to ${filename}`);
+    log.ok(`wrote ${data.length} rows to ${filename}`);
   }
 }
 

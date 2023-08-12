@@ -1,0 +1,68 @@
+name: CI
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  puppeteer:
+    runs-on: ubuntu-latest
+    steps:
+      ########################################
+
+      - name: CHECKOUT CODE
+        uses: actions/checkout@v3
+
+      ########################################
+
+      - name: INSTALL NODE 18.14.2
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.14.2
+
+      ########################################
+
+      - name: INSTALL RUNNER DEPENDENCIES
+
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libx11-xcb1 libxtst6 libxss1 libgconf-2-4 libnss3 libasound2 xvfb
+          sudo apt-get install xserver-xorg-core
+
+     ########################################
+
+      - name: INSTALL SCRAPER DEPENDENCIES
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: true
+        run: |
+          yarn install
+          git submodule init
+          git submodule update
+
+      ########################################
+
+      - name: INSTALL CHROME R1095492
+        run: |
+          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor | sudo tee /usr/share/keyrings/google-cloud-packages-archive-keyring.gpg >/dev/null 2>&1
+          wget https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2F1095492%2Fchrome-linux.zip?alt=media -O chrome.zip
+          unzip chrome.zip
+
+       ########################################
+
+      # - name: ADD CHROME OR CHROMIUM TO PATH
+      #   run: |
+      #     echo "export PATH=\$PATH:/chrome-linux/chrome" >> $GITHUB_ENV
+
+      ########################################
+
+      - name: START XVFB & CHROME THEN RUN SCRAPER
+        run: |
+          Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+          export DISPLAY=:99
+          echo "Xvfb is running on display $DISPLAY"
+          # ./chrome-linux/chrome --remote-debugging-port=9222 http://0.0.0.0 &
+          # find . -name chrome
+          # find "$(pwd)" -name chrome -type f -exec realpath {} \;
+          yarn start:no-sandbox https://uad.ubq.fi/
+        env:
+          DISPLAY: ":99"
+
+      ########################################

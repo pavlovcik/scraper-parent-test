@@ -2,15 +2,16 @@ import puppeteer from "puppeteer";
 import { getHREFsFromAnchors } from "../../utils/utils";
 import { Browser, Page } from "puppeteer";
 import scrape from "../../../src/scraper-kernel/src/scrape";
+import { log } from '../../scraper-kernel/src/logging';
 export default async function ubiquityDollarDashboardController(
   browser: Browser,
   page: Page,
   pages: string
 ) {
-  // console.trace("ok");
+  // log.info("ok");
   const HREFs = await getHREFsFromAnchors(page, "a");
-  // console.trace("hrefs");
+  // log.info("hrefs");
   const results = await scrape({ urls: HREFs, pages }, browser);
-  console.log(results);
+  log.info(results);
   return true;
 }

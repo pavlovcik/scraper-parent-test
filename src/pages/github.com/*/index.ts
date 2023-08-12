@@ -14,15 +14,11 @@ const tableName = commandLineArgs.table as string;
 
 const supabaseUrl = process.env.SUPABASE_URL;
 if (!supabaseUrl?.length) {
-  throw new Error(
-    "No Supabase URL found. Please set SUPABASE_URL in your .env"
-  );
+  throw new Error("No Supabase URL found. Please set SUPABASE_URL in your .env");
 }
 const supabaseKey = process.env.SUPABASE_KEY;
 if (!supabaseKey?.length) {
-  throw new Error(
-    "No Supabase key found. Please set SUPABASE_KEY in your .env"
-  );
+  throw new Error("No Supabase key found. Please set SUPABASE_KEY in your .env");
 }
 const supabase = createClient(supabaseUrl, supabaseKey);
 
@@ -54,14 +50,9 @@ import {
 import scrape from "../../../scraper-kernel/src/scrape";
 import { log } from "../../../scraper-kernel/src/logging";
 
-export default async function gitHubProfileViewController(
-  browser: Browser,
-  page: Page,
-  pages: string
-) {
+export default async function gitHubProfileViewController(browser: Browser, page: Page, pages: string) {
   const contributions = await getContributions(page);
 
-  // @TODO: need to design best strategy to determine if this is a personal profile or organization view
   if (contributions) {
     log.info(`this is a personal profile`);
     // If contributions are found, its likely to be a personal profile page.
@@ -73,15 +64,8 @@ export default async function gitHubProfileViewController(
   }
 }
 
-async function scrapeReposOnOrganizationPage(
-  page: Page,
-  browser: Browser,
-  pages: string
-) {
-  const repos = await getHREFsFromAnchors(
-    page,
-    `#org-repositories a[data-hovercard-type="repository"]`
-  );
+async function scrapeReposOnOrganizationPage(page: Page, browser: Browser, pages: string) {
+  const repos = await getHREFsFromAnchors(page, `#org-repositories a[data-hovercard-type="repository"]`);
   const settings = {
     urls: repos,
     pages,
@@ -91,7 +75,7 @@ async function scrapeReposOnOrganizationPage(
     // results are probably scraped data
     return results;
   }
-  const contributors = results as unknown as string[]; //.catch((error) => error && log.error(`<< [ ${page.url()} ] caught error`));
+  const contributors = results as unknown as string[];
   const flattened = contributors.flat(Infinity);
   const unique = [...new Set(flattened)];
 
@@ -146,11 +130,11 @@ async function scrapePersonalProfile(page, contributions) {
   if (!bufferExists) {
     // set headers
     const buffer = [`date`, ...Object.keys(profile)].join(",");
-    fs.appendFile(
-      `buffer.csv`,
-      buffer.concat("\n"),
-      (error) => error && console.error(error)
-    );
+    fs.appendFile(`buffer.csv`, buffer.concat("\n"), function appendFileError(error) {
+      if (error) {
+        log.info(error);
+      }
+    });
   }
 
   const values = Object.values(profile);
@@ -167,21 +151,19 @@ async function scrapePersonalProfile(page, contributions) {
     }),
   ];
 
-  fs.appendFile(
-    `buffer.csv`,
-    [new Date(), ...row].join(",").concat("\n"),
-    (error) => error && console.error(error)
-  );
-  // console.log({ tableName });
-  const response = await supabase
-    .from(tableName)
-    .upsert(profile, { onConflict: "login" });
+  fs.appendFile(`buffer.csv`, [new Date(), ...row].join(",").concat("\n"), function appendBufferCsvError(error) {
+    if (error) {
+      log.info(error);
+    }
+  });
+  // log.info({ tableName });
+  const response = await supabase.from(tableName).upsert(profile, { onConflict: "login" });
 
   if (response.error) {
-    console.log(`response.error`);
-    console.error(response);
-    console.log(`response.error stringified`);
-    console.error(JSON.stringify(response));
+    // log.info(`response.error`);
+    log.error(response);
+    // log.info(`response.error stringified`);
+    // log.info(JSON.stringify(response));
     throw new Error(`Supabase error!`);
   }
   return profile;

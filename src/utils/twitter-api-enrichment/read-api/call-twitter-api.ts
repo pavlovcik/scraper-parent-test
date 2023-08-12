@@ -1,6 +1,7 @@
 import { https } from "follow-redirects";
 
 import dotenv from "dotenv";
+import { log } from "../../../scraper-kernel/src/logging";
 dotenv.config();
 
 const TWITTER_OAUTH = process.env.TWITTER_OAUTH;
@@ -33,14 +34,14 @@ export default function testTwitterApi(PATH: string) {
       const body = Buffer.concat(chunks);
       const stringified = body.toString();
       try {
-        console.log(JSON.parse(stringified));
+        log.ok(JSON.parse(stringified));
       } catch (error) {
-        console.warn(stringified);
+        log.warn(stringified);
       }
     });
 
     res.on("error", function (error) {
-      console.error(error);
+      log.error(error);
     });
   });
 

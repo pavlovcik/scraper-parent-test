@@ -2,16 +2,19 @@ import commandLineArgs from "command-line-args";
 import commandLineUsage from "command-line-usage";
 import { cliOptions } from "./cli-options";
 import { pagesHandler } from "./cli-pages-handler";
+import { chromiumHandler } from "./cli-chromium-handler";
+import { log } from "../scraper-kernel/src/logging";
 
 export default readCommandLineArgs(); // as { [name in Name]: __Type };
 
 function readCommandLineArgs() {
   const options = commandLineArgs(cliOptions);
   pagesHandler(options);
+  chromiumHandler(options);
   if (options.help) {
     helpMenu();
   } else {
-    console.log(`<<`, options);
+    log.info(`<<`, options);
   }
   return options;
 }
@@ -30,6 +33,6 @@ function helpMenu() {
       content: "Without Stability We Have Nothing. Ubiquity DAO. https://ubq.fi/",
     },
   ]);
-  console.log(usage);
+  log.info(usage);
   process.exit(0);
 }

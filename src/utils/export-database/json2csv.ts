@@ -1,5 +1,6 @@
 import { Parser } from "json2csv";
 import fs from "fs";
+import { log } from "../../scraper-kernel/src/logging";
 type Data = { [key: string]: any };
 
 export default function writeCsvToDisk(headers, data: Data, filename: string) {
@@ -13,10 +14,10 @@ function renderCsv(headers: string[], data: Data) {
   try {
     const parser = new Parser(opts);
     const csv = parser.parse(data);
-    //   console.log(csv);
+    //   log.info(csv);
     return csv;
   } catch (err) {
-    console.error(err);
+    log.error(err);
   }
 }
 
