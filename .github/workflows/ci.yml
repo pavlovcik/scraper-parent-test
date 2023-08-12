@@ -43,7 +43,6 @@ jobs:
           wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor | sudo tee /usr/share/keyrings/google-cloud-packages-archive-keyring.gpg >/dev/null 2>&1
           wget https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2F1095492%2Fchrome-linux.zip?alt=media -O chrome.zip
           unzip chrome.zip
-          find chrome-linux -name chrome -type f
 
         ########################################
 
@@ -58,11 +57,8 @@ jobs:
           Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
           export DISPLAY=:99
           echo "Xvfb is running on display $DISPLAY"
-          # ./chrome-linux/chrome --remote-debugging-port=9222 http://0.0.0.0 &
-          # find . -name chrome
-          # find "$(pwd)" -name chrome -type f -exec realpath {} \;
-          # yarn start:no-sandbox --executablePath="$(pwd)/chrome-linux/chrome-linux/chrome" https://uad.ubq.fi/
-          yarn tsx src -h '--chromium=--user-data-dir=cache --no-sandbox' --table sandbox --executablePath=/home/runner/work/scraper-parent-test/scraper-parent-test/chrome-linux/chrome https://uad.ubq.fi/
+          ./chrome-linux/chrome --remote-debugging-port=9222 http://0.0.0.0 &
+          yarn tsx src -h '--chromium=--user-data-dir=cache --no-sandbox' --table sandbox --executablePath=chrome-linux/chrome https://uad.ubq.fi/
 
         env:
           DISPLAY: ":99"
