@@ -1,6 +1,6 @@
 import { Browser, Page } from "puppeteer";
 import { log } from "../scraper-kernel/src/logging";
-import { PAGES_PATH } from "./PAGES_PATH";
+import { PAGES_PATH } from "../scraper-kernel/src/PAGES_PATH";
 // import metaMaskPageController from "./metamask-extension";
 // import metaMaskPageController from "./metamask";
 export default async function defaultPageController(browser: Browser, page: Page) {

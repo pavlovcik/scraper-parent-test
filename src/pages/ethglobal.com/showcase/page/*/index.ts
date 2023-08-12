@@ -1,22 +1,16 @@
 import { getHREFsFromAnchors } from "../../../../../utils/utils";
 import { Browser, Page } from "puppeteer";
 import scrape from "../../../../../scraper-kernel/src/scrape";
-// src/scraper/src/scrape.ts
-// src/pages/ethglobal.com/showcase/page/*/index.ts
-
+import { PAGES_PATH } from "../../../../../scraper-kernel/src/PAGES_PATH";
 // gallery view default logic
-// there's 84 pages as of 29 sep 2022
-// there's 127 pages as of 12 oct 2022 // ???
-export default async (browser: Browser, page: Page) => {
+export default async function galleryViewLogic(browser: Browser, page: Page) {
   const showcaseUrls = await getHREFsFromAnchors(page, `a[href^="/showcase/"]`);
-  const projectUrls = showcaseUrls.filter(
-    (element: string) => !element.includes("/page/")
-  ); // filter page links out
+  const projectUrls = showcaseUrls.filter((element: string) => !element.includes("/page/")); // filter page links out
   projectUrls.push(showcaseUrls.pop() as string);
-  const config = {
-    pages: "src/pages",
+  const settings = {
+    pages: PAGES_PATH,
     urls: projectUrls,
   };
-  const results = await scrape(config, browser);
+  const results = await scrape(settings, browser);
   return results;
-};
+}

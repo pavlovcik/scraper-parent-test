@@ -1,26 +1,22 @@
 import { createClient } from "@supabase/supabase-js";
 import fs from "fs";
-import puppeteer from "puppeteer";
 import { getHREFsFromAnchors } from "../../../utils/utils";
-
-// let tableName; //  = "GitHub User"; // default
 import commandLineArgs from "../../../cli/cli-args";
 import { Browser, Page } from "puppeteer";
 
-// if (commandLineArgs.table?.length) {
-log.info(`writing to database table ${commandLineArgs.table}`);
 const tableName = commandLineArgs.table as string;
-// }
-
 const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
+
 if (!supabaseUrl?.length) {
   throw new Error("No Supabase URL found. Please set SUPABASE_URL in your .env");
 }
-const supabaseKey = process.env.SUPABASE_KEY;
 if (!supabaseKey?.length) {
   throw new Error("No Supabase key found. Please set SUPABASE_KEY in your .env");
 }
+
 const supabase = createClient(supabaseUrl, supabaseKey);
+log.info(`writing to database table ${commandLineArgs.table}`);
 
 import {
   // getUpdated_at,
@@ -49,8 +45,9 @@ import {
 } from "./profile";
 import scrape from "../../../scraper-kernel/src/scrape";
 import { log } from "../../../scraper-kernel/src/logging";
+import { PAGES_PATH } from "../../../scraper-kernel/src/PAGES_PATH";
 
-export default async function gitHubProfileViewController(browser: Browser, page: Page, pages: string) {
+export default async function gitHubProfileViewController(browser: Browser, page: Page) {
   const contributions = await getContributions(page);
 
   if (contributions) {
@@ -60,17 +57,14 @@ export default async function gitHubProfileViewController(browser: Browser, page
   } else {
     log.info(`this is an organization profile`);
     // If no contributions are found, its likely to be an organization page.
-    return await scrapeReposOnOrganizationPage(page, browser, pages);
+    return await scrapeReposOnOrganizationPage(page, browser);
   }
 }
 
-async function scrapeReposOnOrganizationPage(page: Page, browser: Browser, pages: string) {
+async function scrapeReposOnOrganizationPage(page: Page, browser: Browser) {
   const repos = await getHREFsFromAnchors(page, `#org-repositories a[data-hovercard-type="repository"]`);
-  const settings = {
-    urls: repos,
-    pages,
-  };
-  const results = (await scrape(settings, browser)) as unknown; // @FIXME: standardize page scraper controller return data type
+  const settings = { urls: repos, pages: PAGES_PATH };
+  const results = await scrape(settings, browser);
   if (typeof results != "string") {
     // results are probably scraped data
     return results;

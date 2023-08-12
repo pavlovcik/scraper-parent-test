@@ -2,7 +2,7 @@ import { Browser, Page } from "puppeteer";
 import { log } from "../../../../scraper-kernel/src/logging";
 import scrape from "../../../../scraper-kernel/src/scrape";
 import { getHREFsFromAnchors } from "../../../../utils/utils";
-import { PAGES_PATH } from "../../../PAGES_PATH";
+import { PAGES_PATH } from "../../../../scraper-kernel/src/PAGES_PATH";
 import { extractTextFrom } from "../profile";
 export default async function gitHubRepoView(browser: Browser, page: Page) {
   log.warn(`this is a repository`);

@@ -4,7 +4,7 @@ import { Browser } from "puppeteer";
 import path from "path";
 import { log } from "../../../../scraper-kernel/src/logging";
 import scrape from "../../../../scraper-kernel/src/scrape";
-import { PAGES_PATH } from "../../../PAGES_PATH";
+import { PAGES_PATH } from "../../../../scraper-kernel/src/PAGES_PATH";
 // /Users/nv/repos/ubiquity/scraper/src/pages/ethglobal.com/showcase/*/index.ts
 // project view default logic
 
@@ -12,12 +12,7 @@ import { PAGES_PATH } from "../../../PAGES_PATH";
 const githubSelector = `a[href^="https://github.com/"]`; // Just scrape GitHub even though I noticed gitlab and etherscan links for "source code"
 
 export default async function projectViewController(browser: Browser, page: Page) {
-  const githubUrl = await scrapeGit(page, githubSelector)
-  // .catch(function scrapeGitError(error) {
-  //   if (error) {
-  //     log.error(`Couldn't find GitHub link at ${page.url()}`);
-  //   }
-  // });
+  const githubUrl = await scrapeGit(page, githubSelector);
 
   if (githubUrl) {
     const settings = { urls: githubUrl, pages: PAGES_PATH };

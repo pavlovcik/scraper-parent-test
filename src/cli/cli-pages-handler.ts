@@ -2,7 +2,7 @@ import path from "path";
 import commandLineArgs from "command-line-args";
 import { log } from "../scraper-kernel/src/logging";
 import fs from "fs";
-import { PAGES_PATH } from "../pages/PAGES_PATH";
+import { PAGES_PATH } from "../scraper-kernel/src/PAGES_PATH";
 
 export function pagesHandler(options: commandLineArgs.CommandLineOptions) {
   if (!options.pages) {

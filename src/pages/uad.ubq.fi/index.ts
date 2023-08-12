@@ -7,9 +7,7 @@ import { testNavBar } from "./testNavBar";
 import { walletConnectModal } from "./walletConnectModal";
 
 // using this to load netlify because it has a dynamic subdomain and the page logic matcher doesn't support that now
-console.trace();
 export default async function uadUbqFiPageController(browser: Browser, ubiquityDappPage: Page) {
-  console.trace();
   const consoleMessages = captureLogs(ubiquityDappPage);
   let lastPage = await getLastPage(browser);
   await metaMaskLoginWithPassword(browser, lastPage);
