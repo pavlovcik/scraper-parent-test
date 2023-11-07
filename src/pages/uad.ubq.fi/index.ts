@@ -1,5 +1,5 @@
 import { Browser, Page } from "puppeteer";
-import { log } from "../../scraper-kernel/src/logging";
+import { log } from "@korrrba/scraper-kernel-fork/logging";
 import metaMaskLoginWithPassword, { pressMetaMaskNextButton } from "../metamask-extension";
 import { getLastPage } from "./getLastPage";
 import { huntForPopUp } from "./huntForPopUp";

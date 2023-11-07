@@ -1,6 +1,6 @@
 import path from "path";
 import commandLineArgs from "command-line-args";
-import { log } from "../scraper-kernel/src/logging";
+import { log } from "@korrrba/scraper-kernel-fork/logging";
 import fs from "fs";
 import { PAGES_PATH } from "../pages/PAGES_PATH";
 

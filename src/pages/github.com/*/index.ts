@@ -47,8 +47,8 @@ import {
   getContributions,
   getPercent,
 } from "./profile";
-import scrape from "../../../scraper-kernel/src/scrape";
-import { log } from "../../../scraper-kernel/src/logging";
+import scrape from "@korrrba/scraper-kernel-fork";
+import { log } from "@korrrba/scraper-kernel-fork/logging";
 
 export default async function gitHubProfileViewController(browser: Browser, page: Page, pages: string) {
   const contributions = await getContributions(page);

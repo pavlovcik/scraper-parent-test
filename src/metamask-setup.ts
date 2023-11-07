@@ -2,7 +2,7 @@ import fs, { createWriteStream } from "fs";
 import path from "path";
 import { pipeline } from "stream/promises";
 import unzip from "unzip-crx";
-import { log } from "./scraper-kernel/src/logging";
+import { log } from "@korrrba/scraper-kernel-fork/logging";
 
 export async function metaMaskSetup(cliArgs) {
   const METAMASK = "metamask";
