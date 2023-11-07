@@ -1,6 +1,6 @@
 import fs from "fs";
 import { metaMaskSetup } from "./metamask-setup";
-import { log } from "./scraper-kernel/src/logging";
+import { log } from "@korrrba/scraper-kernel-fork/logging";
 
 export async function setup(cliArgs) {
   const metaMaskPath = await metaMaskSetup(cliArgs);

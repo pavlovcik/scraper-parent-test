@@ -3,7 +3,7 @@ import commandLineUsage from "command-line-usage";
 import { cliOptions } from "./cli-options";
 import { pagesHandler } from "./cli-pages-handler";
 import { chromiumHandler } from "./cli-chromium-handler";
-import { log } from "../scraper-kernel/src/logging";
+import { log } from "@korrrba/scraper-kernel-fork/logging";
 
 export default readCommandLineArgs(); // as { [name in Name]: __Type };
 

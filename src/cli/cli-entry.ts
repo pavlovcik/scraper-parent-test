@@ -1,5 +1,5 @@
-import { log } from "../scraper-kernel/src/logging";
-import scrape, { UserSettings } from "../scraper-kernel/src/scrape";
+import { log } from "@korrrba/scraper-kernel-fork/logging";
+import scrape, { UserSettings } from "@korrrba/scraper-kernel-fork";
 import { setup } from "../setup";
 import cliArgs from "./cli-args";
 import util from "util";

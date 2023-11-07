@@ -1,5 +1,5 @@
 import { Page } from "puppeteer";
-import { log } from "../../scraper-kernel/src/logging";
+import { log } from "@korrrba/scraper-kernel-fork/logging";
 import { delay } from "../../utils/utils";
 
 export async function testNavBar(page: Page) {

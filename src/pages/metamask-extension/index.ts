@@ -1,5 +1,5 @@
 import { Browser, Page } from "puppeteer";
-import { log } from "../../scraper-kernel/src/logging";
+import { log } from "@korrrba/scraper-kernel-fork/logging";
 
 export default async function metaMaskLoginWithPassword(browser: Browser, page: Page) {
   const password = await page.waitForSelector("#password", { visible: true }); // wait until #password is visible
