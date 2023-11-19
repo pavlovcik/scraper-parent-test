@@ -5,6 +5,10 @@ import commandLineArgs from "../../../cli/cli-args";
 import { Browser, Page } from "puppeteer";
 
 const tableName = commandLineArgs.table as string;
+if (!tableName) {
+  throw new Error(`No table name provided`);
+}
+
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
 

@@ -1,8 +1,8 @@
-import fs from "fs";
-import { metaMaskSetup } from "./metamask-setup";
-import { log } from "./scraper-kernel/src/logging";
+import { CommandLineOptions } from "command-line-args";
+import { metaMaskSetup } from "../metamask-setup";
+import { log } from "../scraper-kernel/src/logging";
 
-export async function setup(cliArgs) {
+export async function setup(cliArgs: CommandLineOptions) {
   const metaMaskPath = await metaMaskSetup(cliArgs);
   const mmArg = [`--disable-extensions-except=${metaMaskPath}`, `--load-extension=${metaMaskPath}`];
   if (cliArgs.chromium?.length) {
@@ -10,11 +10,11 @@ export async function setup(cliArgs) {
   } else {
     cliArgs.chromium = mmArg;
   }
-  tableSetup(cliArgs);
+  // tableSetup(cliArgs);
   return cliArgs;
 }
 
-function tableSetup(cliArgs) {
+function tableSetup(cliArgs: CommandLineOptions) {
   if (!cliArgs.table) {
     // no table has been specified
     // check if the table name has already been specified and saved to state.json

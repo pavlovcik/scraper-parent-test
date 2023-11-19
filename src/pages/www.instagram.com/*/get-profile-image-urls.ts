@@ -18,12 +18,12 @@ export default async function getProfileImageUrls(browser: Browser, page: Page):
     error: null,
   } as ImageUrls;
 
-  page.on("response", async (response) => {
+  // page.on("response", async (response) => {
     // const responseHeaders = response.headers();
-    response.status() === 429 && log.warn(`Rate limit exceeded for ${page.url()}`);
+    // response.status() === 429 && log.warn(`Rate limit exceeded for ${page.url()}`);
     // responseHeaders['x-ratelimit-remaining'] && log.info(responseHeaders['x-ratelimit-remaining']);
     // log.info(responseHeaders);
-  });
+  // });
 
   try {
     await page.waitForSelector('img[alt$="profile picture"]', { timeout: 5000 });
@@ -52,7 +52,7 @@ export default async function getProfileImageUrls(browser: Browser, page: Page):
     return buffer;
   }
 
-  const profilePictures = await page.$$eval('img[alt$="profile picture"]', (images) => images.map((img) => img.src));
+  const profilePictures = await page.$$eval('img[alt$="profile picture"]', (images) => images.map((img) => (img as HTMLImageElement).src));
   if (!profilePictures.length) {
     log.error(`No profile pictures found for ${page.url()}`);
     buffer.error = `No profile pictures found`;
