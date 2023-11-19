@@ -4,58 +4,75 @@ import { log } from "../../../scraper-kernel/src/logging";
 export interface ImageUrls {
   username: string;
   profilePicture: string | null;
+  profilePictureBase64: string | null;
   otherPictures: string[];
   error: unknown | null;
 }
 
-export default async function getImageUrls(browser: Browser, profile: Page): Promise<ImageUrls> {
+export default async function getProfileImageUrls(browser: Browser, page: Page): Promise<ImageUrls> {
   const buffer = {
-    username: profile.url().split("/")[3],
+    username: page.url().split("/")[3],
     profilePicture: null,
+    profilePictureBase64: null,
     otherPictures: [],
     error: null,
   } as ImageUrls;
 
-  try {
-    await profile.waitForSelector('img[alt$="profile picture"]', { timeout: 5000 });
-  } catch (error) {
-    log.warn(`No selector for profile picture found for ${profile.url()} possibly a "restricted" profile`);
+  page.on("response", async (response) => {
+    // const responseHeaders = response.headers();
+    response.status() === 429 && log.warn(`Rate limit exceeded for ${page.url()}`);
+    // responseHeaders['x-ratelimit-remaining'] && log.info(responseHeaders['x-ratelimit-remaining']);
+    // log.info(responseHeaders);
+  });
 
-    const images = await profile.$$eval("img", (images) => images.filter((img) => !img.src.startsWith("data:image")).map((img) => img.src));
+  try {
+    await page.waitForSelector('img[alt$="profile picture"]', { timeout: 5000 });
+  } catch (error) {
+    log.warn(`No selector for profile picture found for ${page.url()} possibly a "restricted" profile or rate limiting`);
+    // // const responseHeaders = await page.getH
+    // if (responseHeaders['x-ratelimit-remaining'] && parseInt(responseHeaders['x-ratelimit-remaining']) === 0) {
+    //   log.warn(`Rate limit exceeded for ${page.url()}`);
+    //   buffer.error = `Rate limit exceeded`;
+    //   return buffer;
+    // }
+    const screenshotPath = `./screenshots/${buffer.username}.png`;
+    await page.screenshot({ path: screenshotPath });
+
+    const images = await page.$$eval("img", (images) => images.filter((img) => !img.src.startsWith("data:image")).map((img) => img.src));
     if (!images.length) {
-      log.error(`No non-base64 encoded images found for ${profile.url()}`);
+      log.error(`No non-base64 encoded images found for ${page.url()}`);
       buffer.error = `No non-base64 encoded images found`;
       return buffer;
     } else {
       buffer.profilePicture = images[images.length - 1];
+      // buffer.profilePicture = await getBase64Image(buffer.profilePicture);
     }
 
     buffer.error = error;
     return buffer;
   }
 
-  const profilePictures = await profile.$$eval('img[alt$="profile picture"]', (images) => images.map((img) => img.src));
+  const profilePictures = await page.$$eval('img[alt$="profile picture"]', (images) => images.map((img) => img.src));
   if (!profilePictures.length) {
-    log.error(`No profile pictures found for ${profile.url()}`);
+    log.error(`No profile pictures found for ${page.url()}`);
     buffer.error = `No profile pictures found`;
     return buffer;
   }
-  const profilePicture = profilePictures[0];
+  const profilePicture = profilePictures[0] as string | void;
 
   if (!profilePicture) {
-    log.error(`No main profile picture found for ${profile.url()}`);
+    log.error(`No main profile picture found for ${page.url()}`);
     buffer.error = `No profile picture found`;
     return buffer;
   } else {
     buffer.profilePicture = profilePicture;
+    // buffer.profilePicture = await getBase64Image(buffer.profilePicture);
   }
 
-  const anchorImages = (await profile.$$eval('a[href^="/p/"] img', (images) => images.map((img) => img.src))).filter(
-    (img) => img !== ""
-  ) as AnchorImagesExample;
+  const anchorImages = (await page.$$eval('a[href^="/p/"] img', (images) => images.map((img) => img.src))).filter((img) => img !== "") as AnchorImagesExample;
 
   if (!anchorImages.length) {
-    log.error(`No images found for ${profile.url()}`);
+    log.error(`No images found for ${page.url()}`);
     buffer.error = `No images found`;
     return buffer;
   } else {

@@ -1,8 +1,10 @@
-import getImageUrls from "./get-image-urls";
 import { Browser, Page } from "puppeteer";
-import { ImageUrls } from "./get-image-urls";
-
+import getProfileImageUrls, { ImageUrls } from "./get-profile-image-urls";
+import { getBase64Image } from "./get-base-64-image";
 export default async function instagramProfileController(browser: Browser, profile: Page): Promise<ImageUrls> {
-  const images = await getImageUrls(browser, profile);
+  const images = await getProfileImageUrls(browser, profile);
+  if (images.profilePicture) {
+    images.profilePictureBase64 = await getBase64Image(images.profilePicture);
+  }
   return images;
 }

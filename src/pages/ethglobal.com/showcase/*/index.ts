@@ -4,7 +4,8 @@ import { Browser } from "puppeteer";
 import path from "path";
 import { log } from "../../../../scraper-kernel/src/logging";
 import scrape from "../../../../scraper-kernel/src/scrape";
-import { PAGES_PATH } from "../../../../scraper-kernel/src/PAGES_PATH";
+import readCommandLineArgs from "../../../../cli/cli-args";
+
 // /Users/nv/repos/ubiquity/scraper/src/pages/ethglobal.com/showcase/*/index.ts
 // project view default logic
 
@@ -15,7 +16,7 @@ export default async function projectViewController(browser: Browser, page: Page
   const githubUrl = await scrapeGit(page, githubSelector);
 
   if (githubUrl) {
-    const settings = { urls: githubUrl, pages: PAGES_PATH };
+    const settings = { urls: githubUrl, pages: readCommandLineArgs.pages };
     return await scrape(settings, browser);
   }
 }

@@ -45,7 +45,7 @@ import {
 } from "./profile";
 import scrape from "../../../scraper-kernel/src/scrape";
 import { log } from "../../../scraper-kernel/src/logging";
-import { PAGES_PATH } from "../../../scraper-kernel/src/PAGES_PATH";
+import readCommandLineArgs from "../../../cli/cli-args";
 
 export default async function gitHubProfileViewController(browser: Browser, page: Page) {
   const contributions = await getContributions(page);
@@ -63,7 +63,7 @@ export default async function gitHubProfileViewController(browser: Browser, page
 
 async function scrapeReposOnOrganizationPage(page: Page, browser: Browser) {
   const repos = await getHREFsFromAnchors(page, `#org-repositories a[data-hovercard-type="repository"]`);
-  const settings = { urls: repos, pages: PAGES_PATH };
+  const settings = { urls: repos, pages: readCommandLineArgs.pages };
   const results = await scrape(settings, browser);
   if (typeof results != "string") {
     // results are probably scraped data

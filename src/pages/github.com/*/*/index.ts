@@ -2,7 +2,8 @@ import { Browser, Page } from "puppeteer";
 import { log } from "../../../../scraper-kernel/src/logging";
 import scrape from "../../../../scraper-kernel/src/scrape";
 import { getHREFsFromAnchors } from "../../../../utils/utils";
-import { PAGES_PATH } from "../../../../scraper-kernel/src/PAGES_PATH";
+import readCommandLineArgs from "../../../../cli/cli-args";
+
 import { extractTextFrom } from "../profile";
 export default async function gitHubRepoView(browser: Browser, page: Page) {
   log.warn(`this is a repository`);
@@ -11,7 +12,7 @@ export default async function gitHubRepoView(browser: Browser, page: Page) {
 
   if (contributorURLsUnique.length) {
     log.ok(contributorURLsUnique.join(", "));
-    const config = { urls: contributorURLsUnique, pages: PAGES_PATH };
+    const config = { urls: contributorURLsUnique, pages: readCommandLineArgs.pages };
     const contributorData = await scrape(config, browser);
     return contributorData;
   }
@@ -20,13 +21,13 @@ export default async function gitHubRepoView(browser: Browser, page: Page) {
   if (latestCommitAuthorName) {
     const authorGitHubPage = "https://github.com/".concat(latestCommitAuthorName);
     log.ok(authorGitHubPage);
-    return await scrape({ urls: authorGitHubPage, pages: PAGES_PATH }, browser);
+    return await scrape({ urls: authorGitHubPage, pages: readCommandLineArgs.pages }, browser);
   }
 
   const avatarHref = await clickLatestCommitAvatar(page);
   if (avatarHref) {
     log.ok(avatarHref);
-    return await scrape({ urls: avatarHref, pages: PAGES_PATH }, browser);
+    return await scrape({ urls: avatarHref, pages: readCommandLineArgs.pages }, browser);
   }
 
   const errorMessage = `no contributors found on repo view?`;
