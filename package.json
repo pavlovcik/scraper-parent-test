@@ -11,7 +11,7 @@
     "start:no-cache": "tsx src",
     "test:ci": "tsx src/ https://github.com/pavlovcik https://github.com/transitive-bullshit",
     "test:types": "tsc --watch --noEmit",
-    "utils:database-export": "tsx src/utils/github-api-enrichment/export-database",
+    "utils:database-export": "tsx src/utils/export-database",
     "prepare": "husky install",
     "format": "run-s format:*",
     "format:prettier": "prettier --write src",
