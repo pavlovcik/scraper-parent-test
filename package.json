@@ -5,10 +5,10 @@
     "name": "アレクサンダー.eth"
   },
   "scripts": {
-    "start": "tsx src -h --chromium=\"--user-data-dir=cache\" --table sandbox",
+    "shuffle": "yarn start $(awk 'BEGIN {srand()} {print rand() \"\t\" $0}' ./research/targets-following.txt | sort -n | cut -f2-)",
+    "cache:clear": "cd cache && git reset --hard && git clean -fd && cd ..",
+    "start": "tsx src --chromium=\"--user-data-dir=cache\" --table sandbox",
     "start:no-sandbox": "tsx src -h --chromium=\"--user-data-dir=cache --no-sandbox\" --table sandbox --executablePath /home/runner/work/scraper-parent-test/scraper-parent-test/chrome-linux/chrome",
-    "prestart": "cd cache && git reset --hard && git clean -fd && cd ..",
-    "start:no-cache": "tsx src",
     "test:ci": "tsx src/ https://github.com/pavlovcik https://github.com/transitive-bullshit",
     "test:types": "tsc --watch --noEmit",
     "utils:database-export": "tsx src/utils/export-database",
@@ -37,6 +37,7 @@
     "eslint": "^8.34.0",
     "follow-redirects": "^1.15.2",
     "husky": "^8.0.3",
+    "image-type": "^5.2.0",
     "json2csv": "^6.0.0-alpha.2",
     "lint-staged": "^13.1.2",
     "node-fetch": "^3.3.2",

@@ -4,7 +4,7 @@ import { log } from "../../../scraper-kernel/src/logging";
 export interface ImageUrls {
   username: string;
   profilePicture: string | null;
-  profilePictureBase64: string | null;
+  profilePictureFile: string | null;
   otherPictures: string[];
   error: unknown | null;
 }
@@ -13,28 +13,16 @@ export default async function getProfileImageUrls(browser: Browser, page: Page):
   const buffer = {
     username: page.url().split("/")[3],
     profilePicture: null,
-    profilePictureBase64: null,
+    profilePictureFile: null,
     otherPictures: [],
     error: null,
   } as ImageUrls;
-
-  // page.on("response", async (response) => {
-    // const responseHeaders = response.headers();
-    // response.status() === 429 && log.warn(`Rate limit exceeded for ${page.url()}`);
-    // responseHeaders['x-ratelimit-remaining'] && log.info(responseHeaders['x-ratelimit-remaining']);
-    // log.info(responseHeaders);
-  // });
 
   try {
     await page.waitForSelector('img[alt$="profile picture"]', { timeout: 5000 });
   } catch (error) {
     log.warn(`No selector for profile picture found for ${page.url()} possibly a "restricted" profile or rate limiting`);
-    // // const responseHeaders = await page.getH
-    // if (responseHeaders['x-ratelimit-remaining'] && parseInt(responseHeaders['x-ratelimit-remaining']) === 0) {
-    //   log.warn(`Rate limit exceeded for ${page.url()}`);
-    //   buffer.error = `Rate limit exceeded`;
-    //   return buffer;
-    // }
+
     const screenshotPath = `./screenshots/${buffer.username}.png`;
     await page.screenshot({ path: screenshotPath });
 
@@ -45,7 +33,6 @@ export default async function getProfileImageUrls(browser: Browser, page: Page):
       return buffer;
     } else {
       buffer.profilePicture = images[images.length - 1];
-      // buffer.profilePicture = await getBase64Image(buffer.profilePicture);
     }
 
     buffer.error = error;
@@ -58,7 +45,7 @@ export default async function getProfileImageUrls(browser: Browser, page: Page):
     buffer.error = `No profile pictures found`;
     return buffer;
   }
-  const profilePicture = profilePictures[0] as string | void;
+  const profilePicture = profilePictures[1] as string | void;
 
   if (!profilePicture) {
     log.error(`No main profile picture found for ${page.url()}`);

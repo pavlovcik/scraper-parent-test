@@ -1,5 +1,10 @@
 {
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.json" // This line includes all JSON files in the src directory
+  ],
   "compilerOptions": {
+    "resolveJsonModule": true,
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
 
     /* Basic Options */
