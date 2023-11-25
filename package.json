@@ -8,7 +8,7 @@
     "shuffle": "yarn start $(awk 'BEGIN {srand()} {print rand() \"\t\" $0}' ./research/targets-following.txt | sort -n | cut -f2-)",
     "cache:clear": "cd cache && git reset --hard && git clean -fd && cd ..",
     "start": "tsx src --chromium=\"--user-data-dir=cache\" --table sandbox",
-    "start:no-sandbox": "tsx src -h --chromium=\"--user-data-dir=cache --no-sandbox\" --table sandbox --executablePath /home/runner/work/scraper-parent-test/scraper-parent-test/chrome-linux/chrome",
+    "start:no-sandbox": "tsx src --chromium=\"--user-data-dir=cache --no-sandbox\" --table sandbox --executablePath /home/runner/work/scraper-parent-test/scraper-parent-test/chrome-linux/chrome",
     "test:ci": "tsx src/ https://github.com/pavlovcik https://github.com/transitive-bullshit",
     "test:types": "tsc --watch --noEmit",
     "utils:database-export": "tsx src/utils/export-database",

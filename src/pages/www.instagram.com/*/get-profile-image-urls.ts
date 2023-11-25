@@ -45,22 +45,24 @@ export default async function getProfileImageUrls(browser: Browser, page: Page):
     buffer.error = `No profile pictures found`;
     return buffer;
   }
-  const profilePicture = profilePictures[1] as string | void;
+  buffer.profilePicture = (profilePictures[1] as string | void) || null;
 
-  if (!profilePicture) {
-    log.error(`No main profile picture found for ${page.url()}`);
-    buffer.error = `No profile picture found`;
-    return buffer;
-  } else {
-    buffer.profilePicture = profilePicture;
-    // buffer.profilePicture = await getBase64Image(buffer.profilePicture);
+  if (!buffer.profilePicture) {
+    // check if private account profile photo
+    buffer.profilePicture = await page.$eval('img[alt$="Profile photo"]', (img) => (img as HTMLImageElement).src);
+
+    if (!buffer.profilePicture) {
+      log.error(`No profile picture found for ${page.url()}`);
+      buffer.error = `No profile pictures found`;
+      return buffer;
+    }
   }
 
   const anchorImages = (await page.$$eval('a[href^="/p/"] img', (images) => images.map((img) => img.src))).filter((img) => img !== "") as AnchorImagesExample;
 
   if (!anchorImages.length) {
-    log.error(`No images found for ${page.url()}`);
-    buffer.error = `No images found`;
+    log.warn(`No other images found for ${page.url()}`);
+    buffer.error = `No other images found`;
     return buffer;
   } else {
     buffer.otherPictures = anchorImages;

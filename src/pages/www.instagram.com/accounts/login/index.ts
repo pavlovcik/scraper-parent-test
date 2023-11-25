@@ -24,7 +24,9 @@ export default async function loginWithFacebook(browser: Browser, page: Page) {
   await loginWithFacebook?.click();
 
   await facebookLoginPopup(browser);
-  await page.waitForNavigation({ waitUntil: "networkidle2" , timeout: 60000});
+  await page.waitForNavigation({ waitUntil: "networkidle2", timeout: 60000 }).catch((error) => {
+    console.log("error", error);
+  });
 
   const token = await findXAuthToken(page);
   return token;

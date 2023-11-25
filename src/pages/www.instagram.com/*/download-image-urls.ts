@@ -14,7 +14,11 @@ async function downloadImage(browser: Browser, url: string): Promise<string> {
     log.error(`No url provided`);
   }
   const page = await browser.newPage();
-  const response = await page.goto(url, { waitUntil: "networkidle2" });
+  const response = await page.goto(url, { waitUntil: "networkidle2" }).catch((error) => {
+    log.error(`Could not download image from ${url}`);
+    return null;
+  });
+
   const buffer = await response?.buffer();
   if (!buffer) {
     log.error(`Could not download image from ${url}`);
