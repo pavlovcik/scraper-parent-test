@@ -1,13 +1,6 @@
-import dotenv from "dotenv";
-import path from "path";
 import { Browser, HTTPRequest, Page } from "puppeteer";
 import { facebookLoginPopup } from "./facebookLoginPopup";
 import { findByTagName } from "./test";
-dotenv.config({ path: path.resolve(__dirname, "../../.env") });
-
-// function sleep(ms: number) {
-//   return new Promise(resolve => setTimeout(resolve, ms));
-// }
 
 export default async function loginWithFacebook(browser: Browser, page: Page) {
   // const login = await findByTagName("button", page, "Log in with Facebook");
@@ -24,9 +17,7 @@ export default async function loginWithFacebook(browser: Browser, page: Page) {
   await loginWithFacebook?.click();
 
   await facebookLoginPopup(browser);
-  await page.waitForNavigation({ waitUntil: "networkidle2", timeout: 60000 }).catch((error) => {
-    console.log("error", error);
-  });
+  await page.waitForNavigation({ waitUntil: "networkidle2", timeout: 60000 }).catch((error) => console.log("error", error));
 
   const token = await findXAuthToken(page);
   return token;

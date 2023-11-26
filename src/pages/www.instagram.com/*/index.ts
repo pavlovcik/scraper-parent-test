@@ -3,6 +3,7 @@ import imageType from "image-type";
 import path from "path";
 import { Browser, Page } from "puppeteer";
 import util from "util";
+import { log } from "../../../scraper-kernel/src/logging";
 import { downloadBinaryImage } from "./get-base-64-image";
 import getProfileImageUrls, { ImageUrls } from "./get-profile-image-urls";
 
@@ -10,7 +11,35 @@ const mkdir = util.promisify(fs.mkdir);
 const writeFile = util.promisify(fs.writeFile);
 
 export default async function instagramProfileController(browser: Browser, profile: Page): Promise<ImageUrls> {
-  return await scrapeImages(browser, profile);
+  const cached = await checkCache(browser, profile);
+  if (cached) {
+    return cached;
+  } else {
+    return await scrapeImages(browser, profile);
+  }
+}
+
+async function checkCache(browser: Browser, profile: Page): Promise<ImageUrls | null> {
+  const profileUrl = profile.url();
+  const profileHandle = profileUrl.split("/")[3];
+  const profileDirectory = path.join("instagram-pictures", profileHandle);
+
+  if (fs.existsSync(profileDirectory)) {
+    log.info(`Profile ${profileHandle} has already been scraped. Skipping.`);
+    try {
+      const profileJsonPath = path.join(profileDirectory, `${profileHandle}.json`);
+      const profileData = JSON.parse(await fs.promises.readFile(profileJsonPath, "utf-8"));
+      const profile = profileData as ImageUrls;
+      if (profile.error) {
+        log.warn(`There was an error scraping profile last time ${profileHandle}: ${profile.error}`);
+      }
+      return profile;
+    } catch (error) {
+      log.warn(`Error reading cached profile data for ${profileHandle}`);
+      return null;
+    }
+  }
+  return null;
 }
 
 async function scrapeImages(browser: Browser, profile: Page) {
@@ -27,6 +56,9 @@ async function scrapeImages(browser: Browser, profile: Page) {
       await saveImage(picture, images.username, "other-picture", imageIndex++);
     }
   }
+
+  const profileJsonPath = path.join("instagram-pictures", images.username, `${images.username}.json`);
+  await writeFile(profileJsonPath, JSON.stringify(images));
 
   return images;
 }
@@ -47,10 +79,4 @@ async function saveImage(url: string, username: string, prefix: string, index: n
   }
 
   await writeFile(fileName, image);
-}
-
-function writeFileCallback(err: NodeJS.ErrnoException | null): void {
-  if (err) {
-    console.error(err);
-  }
 }

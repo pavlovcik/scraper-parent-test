@@ -26,7 +26,10 @@ export default async function getProfileImageUrls(browser: Browser, page: Page):
     const screenshotPath = `./screenshots/${buffer.username}.png`;
     await page.screenshot({ path: screenshotPath });
 
-    const images = await page.$$eval("img", (images) => images.filter((img) => !img.src.startsWith("data:image")).map((img) => img.src));
+    log.warn(`Waiting a minute if rate limiting is the issue for ${page.url()}`);
+    await new Promise((resolve) => setTimeout(resolve, 60000)); // wait a minute
+
+    const images = await page.$$eval("img", (imgs) => imgs.filter((img) => !img.src.startsWith("data:image")).map((img) => img.src));
     if (!images.length) {
       log.error(`No non-base64 encoded images found for ${page.url()}`);
       buffer.error = `No non-base64 encoded images found`;
