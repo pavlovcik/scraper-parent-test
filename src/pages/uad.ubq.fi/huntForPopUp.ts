@@ -1,7 +1,6 @@
-import { Browser } from "puppeteer";
+import { Browser, Page } from "puppeteer";
 import { log } from "../../scraper-kernel/src/logging";
 import { delay } from "../../utils/utils";
-import { pressMetaMaskNextButton } from "../metamask-extension";
 
 export async function huntForPopUp(browser: Browser) {
   const pages = await browser.pages();
@@ -15,4 +14,15 @@ export async function huntForPopUp(browser: Browser) {
   } catch (error) {
     return await huntForPopUp(browser); // try again
   }
+}
+
+async function pressMetaMaskNextButton(browser: Browser, page: Page) {
+  const next = await page.waitForSelector("button.button.btn--rounded.btn-primary", { timeout: 30000 });
+  if (!next) {
+    log.warn("No MetaMask next button found.");
+    return null;
+  }
+
+  await next.click();
+  return next;
 }

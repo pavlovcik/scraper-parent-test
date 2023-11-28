@@ -1,6 +1,5 @@
 import { Browser, Page } from "puppeteer";
 import { log } from "../../scraper-kernel/src/logging";
-import metaMaskLoginWithPassword, { pressMetaMaskNextButton } from "../metamask-extension";
 import { getLastPage } from "./getLastPage";
 import { huntForPopUp } from "./huntForPopUp";
 import { testNavBar } from "./testNavBar";
@@ -36,4 +35,11 @@ function captureLogs(page: Page) {
   });
 
   return consoleMessages;
+}
+
+async function metaMaskLoginWithPassword(browser: Browser, page: Page) {
+  const password = await page.waitForSelector("#password", { visible: true }); // wait until #password is visible
+  const keyboardStrokes = "aaaaaaaa".concat(String.fromCharCode(13));
+  await password?.type(keyboardStrokes);
+  log.warn("Logged into MetaMask successfully.");
 }
