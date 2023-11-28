@@ -19,7 +19,9 @@ export default async function uadUbqFiPageController(browser: Browser, ubiquityD
   await lastPage.screenshot({ path: "2.png" });
   await metaMaskLoginWithPassword(browser, lastPage);
   await lastPage.screenshot({ path: "3.png" });
-  // await pressMetaMaskNextButton(browser, lastPage);
+  await metamaskOnboarding(browser, lastPage);
+  await lastPage.screenshot({ path: "5.png" });
+  await lastPage.screenshot({ path: "onboarded.png" });
   await ubiquityDappPage.bringToFront();
   await walletConnectModal(ubiquityDappPage);
   await huntForPopUp(browser);
@@ -54,4 +56,14 @@ async function metaMaskLoginWithPassword(browser: Browser, page: Page) {
   const keyboardStrokes = "aaaaaaaa".concat(String.fromCharCode(13));
   await password?.type(keyboardStrokes);
   log.warn("Logged into MetaMask successfully.");
+}
+
+async function metamaskOnboarding(browser: Browser, page: Page) {
+  // Agree to the terms of use by clicking the checkbox
+  await page.waitForSelector("#onboarding__terms-checkbox");
+  await page.click("#onboarding__terms-checkbox");
+
+  // Click the "Create Wallet" button
+  await page.waitForSelector('[data-testid="onboarding-create-wallet"]');
+  await page.click('[data-testid="onboarding-create-wallet"]');
 }
