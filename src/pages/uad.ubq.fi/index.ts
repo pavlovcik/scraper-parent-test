@@ -9,10 +9,16 @@ import { walletConnectModal } from "./walletConnectModal";
 export default async function uadUbqFiPageController(browser: Browser, ubiquityDappPage: Page) {
   const consoleMessages = captureLogs(ubiquityDappPage);
   await ubiquityDappPage.screenshot({ path: "1.png" });
-  let lastPage = await getLastPage(browser);
-  await ubiquityDappPage.screenshot({ path: "2.png" });
+  const lastPage = await getLastPage(browser);
+
+  const pages = await browser.pages();
+  console.trace({ pages });
+  // const lastPage = pages[pages.length - 1];
+  // return lastPage;
+
+  await lastPage.screenshot({ path: "2.png" });
   await metaMaskLoginWithPassword(browser, lastPage);
-  await ubiquityDappPage.screenshot({ path: "3.png" });
+  await lastPage.screenshot({ path: "3.png" });
   // await pressMetaMaskNextButton(browser, lastPage);
   await ubiquityDappPage.bringToFront();
   await walletConnectModal(ubiquityDappPage);
