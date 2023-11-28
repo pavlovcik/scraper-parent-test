@@ -47,7 +47,10 @@ function captureLogs(page: Page) {
 }
 
 async function metaMaskLoginWithPassword(browser: Browser, page: Page) {
-  const password = await page.waitForSelector("#password", { visible: true }); // wait until #password is visible
+  const password = await page.waitForSelector("#password", { visible: true }).catch(async (error) => {
+    await page.screenshot({ path: "4.png" });
+    throw error;
+  }); // wait until #password is visible
   const keyboardStrokes = "aaaaaaaa".concat(String.fromCharCode(13));
   await password?.type(keyboardStrokes);
   log.warn("Logged into MetaMask successfully.");
