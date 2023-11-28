@@ -8,8 +8,11 @@ import { walletConnectModal } from "./walletConnectModal";
 // using this to load netlify because it has a dynamic subdomain and the page logic matcher doesn't support that now
 export default async function uadUbqFiPageController(browser: Browser, ubiquityDappPage: Page) {
   const consoleMessages = captureLogs(ubiquityDappPage);
+  await ubiquityDappPage.screenshot({ path: "1.png" });
   let lastPage = await getLastPage(browser);
+  await ubiquityDappPage.screenshot({ path: "2.png" });
   await metaMaskLoginWithPassword(browser, lastPage);
+  await ubiquityDappPage.screenshot({ path: "3.png" });
   // await pressMetaMaskNextButton(browser, lastPage);
   await ubiquityDappPage.bringToFront();
   await walletConnectModal(ubiquityDappPage);

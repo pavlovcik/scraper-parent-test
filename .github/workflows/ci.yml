@@ -66,3 +66,14 @@ jobs:
           PAGES_PATH: "src/pages"
 
       ########################################
+
+      - name: UPLOAD ARTIFACTS
+        uses: actions/upload-artifact@v3
+        with:
+          name: screenshots
+          path: |
+            1.png
+            2.png
+            3.png
+
+      ########################################
