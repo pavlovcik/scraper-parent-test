@@ -38,6 +38,12 @@ jobs:
           git submodule update
 
       ########################################
+
+      - name: LIST CACHE DIRECTORY
+        run: |
+          ls -la cache
+
+      ########################################
       - name: INSTALL CHROME R1095492
         run: |
           wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor | sudo tee /usr/share/keyrings/google-cloud-packages-archive-keyring.gpg >/dev/null 2>&1
