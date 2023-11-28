@@ -17,9 +17,9 @@ export default async function uadUbqFiPageController(browser: Browser, ubiquityD
   // return lastPage;
 
   await lastPage.screenshot({ path: "2.png" });
-  await metaMaskLoginWithPassword(browser, lastPage);
-  await lastPage.screenshot({ path: "3.png" });
-  await metamaskOnboarding(browser, lastPage);
+  // await metaMaskLoginWithPassword(browser, lastPage);
+  // await lastPage.screenshot({ path: "3.png" });
+  await metaMaskCreateNewWallet(browser, lastPage);
   await lastPage.screenshot({ path: "5.png" });
   await lastPage.screenshot({ path: "onboarded.png" });
   await ubiquityDappPage.bringToFront();
@@ -48,22 +48,41 @@ function captureLogs(page: Page) {
   return consoleMessages;
 }
 
-async function metaMaskLoginWithPassword(browser: Browser, page: Page) {
-  const password = await page.waitForSelector("#password", { visible: true }).catch(async (error) => {
-    await page.screenshot({ path: "4.png" });
-    throw error;
-  }); // wait until #password is visible
-  const keyboardStrokes = "aaaaaaaa".concat(String.fromCharCode(13));
-  await password?.type(keyboardStrokes);
-  log.warn("Logged into MetaMask successfully.");
-}
+// async function metaMaskLoginWithPassword(browser: Browser, page: Page) {
+//   const password = await page.waitForSelector("#password", { visible: true }).catch(async (error) => {
+//     await page.screenshot({ path: "4.png" });
+//     throw error;
+//   }); // wait until #password is visible
+//   const keyboardStrokes = "aaaaaaaa".concat(String.fromCharCode(13));
+//   await password?.type(keyboardStrokes);
+//   log.warn("Logged into MetaMask successfully.");
+// }
 
-async function metamaskOnboarding(browser: Browser, page: Page) {
-  // Agree to the terms of use by clicking the checkbox
-  await page.waitForSelector("#onboarding__terms-checkbox");
-  await page.click("#onboarding__terms-checkbox");
-
-  // Click the "Create Wallet" button
+async function metaMaskCreateNewWallet(browser: Browser, page: Page) {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   await page.waitForSelector('[data-testid="onboarding-create-wallet"]');
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   await page.click('[data-testid="onboarding-create-wallet"]');
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  await page.waitForSelector('[data-testid="metametrics-no-thanks"]');
+  await page.click('[data-testid="metametrics-no-thanks"]');
+
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  await page.type('[data-testid="create-password-new"]', "your password");
+  await page.type('[data-testid="create-password-confirm"]', "your password");
+  await page.click('[data-testid="create-password-terms"]');
+  await page.click('[data-testid="create-password-wallet"]');
+
+  await new Promise((resolve) => setTimeout(resolve, 5000));
+
+  await page.click('[data-testid="secure-wallet-later"]');
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await page.click('[data-testid="skip-srp-backup-popover-checkbox"]');
+  await page.click('[data-testid="skip-srp-backup"]');
+
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+
+  await page.click('[data-testid="onboarding-complete-done"]');
 }
