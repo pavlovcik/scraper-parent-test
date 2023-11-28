@@ -81,8 +81,10 @@ async function metaMaskCreateNewWallet(browser: Browser, page: Page) {
   await new Promise((resolve) => setTimeout(resolve, 1000));
   await page.click('[data-testid="skip-srp-backup-popover-checkbox"]');
   await page.click('[data-testid="skip-srp-backup"]');
-
   await new Promise((resolve) => setTimeout(resolve, 1000));
-
   await page.click('[data-testid="onboarding-complete-done"]');
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await page.click('[data-testid="pin-extension-next"]');
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await page.click('[data-testid="pin-extension-done"]');
 }
