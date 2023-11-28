@@ -21,7 +21,7 @@ export default async function getProfileImageUrls(browser: Browser, page: Page):
   try {
     await page.waitForSelector('img[alt$="profile picture"]', { timeout: 5000 });
   } catch (error) {
-    log.warn(`No selector for profile picture found for ${page.url()} possibly a "restricted" profile or rate limiting`);
+    log.warn(`No selector for profile picture found for ${page.url()} likely rate limiting`);
 
     const screenshotPath = `./screenshots/${buffer.username}.png`;
     await page.screenshot({ path: screenshotPath });

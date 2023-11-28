@@ -11,7 +11,7 @@ export default async function uadUbqFiPageController(browser: Browser, ubiquityD
   const consoleMessages = captureLogs(ubiquityDappPage);
   let lastPage = await getLastPage(browser);
   await metaMaskLoginWithPassword(browser, lastPage);
-  await pressMetaMaskNextButton(browser, lastPage);
+  // await pressMetaMaskNextButton(browser, lastPage);
   await ubiquityDappPage.bringToFront();
   await walletConnectModal(ubiquityDappPage);
   await huntForPopUp(browser);
